@@ -62,7 +62,7 @@
 								</div>
 							</div>
 							<div class="col-lg-8">
-							  <form action="{{route('admin.profile.store')}}" method="post" enctype="multipart/form-data">
+							  <form action="{{route('admin.password.update')}}" method="post">
 								@csrf
 								<div class="card">
 									<div class="card-body">
