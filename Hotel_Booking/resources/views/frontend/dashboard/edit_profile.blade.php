@@ -35,7 +35,8 @@
  
             <section class="checkout-area pb-70">
             <div class="container">
-                <form>
+                <form action="{{route('profile.store')}}" method="post" enctype="multipart/form-data">
+				    @csrf
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <div class="billing-details">
@@ -91,7 +92,7 @@
 											</div>
 									</div>
  
- <button type="submit" class="btn btn-danger">Save Changes </button>
+                        <button type="submit" class="btn btn-danger">Save Changes </button>
 </div>
 </div>
 </div>
