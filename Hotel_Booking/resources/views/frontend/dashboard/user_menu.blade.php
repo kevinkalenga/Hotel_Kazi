@@ -5,12 +5,12 @@
 		@endphp              
                     
                     <div class="service-side-bar">
-                            
+                            <!-- class="rounded-circle p-1 bg-primary" width="80" -->
 
                             <div class="services-bar-widget">
-                                <h3 class="title">User Sidebar</h3>
+                                <h3 class="title text-center">User Sidebar</h3>
                                 <div class="side-bar-categories">
-        <img src="{{(!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/default_avatar.jpg')}}" class="rounded mx-auto d-block" alt="Image" style="width:100px; height:100px;"> 
+        <img src="{{(!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/default_avatar.jpg')}}" class="rounded-circle mx-auto d-block bg-primary" alt="Image" style="width:100px; height:100px;"> 
         <center>
             <b>{{$profileData->name}}</b><br>
             <b>{{$profileData->email}}</b>
@@ -32,7 +32,7 @@
                 <a href="#">Booking Details </a>
             </li>
             <li>
-                <a href="#">Logout </a>
+                <a href="{{route('user.logout')}}">Logout </a>
             </li>
         </ul>
                                 </div>
