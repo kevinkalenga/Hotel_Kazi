@@ -99,13 +99,12 @@
 												<input type="text" name="address" class="form-control" value="{{$profileData->address}}" />
 											</div>
 										</div>
-										<div class="row mb-3">
-											<div class="col-sm-3">
-												<h6 class="mb-0">Photo</h6>
+										<div class="col-lg-12 col-md-6">
+											<div class="form-group">
+												<label>User Profile <span class="required">*</span></label>
+												<input type="file" name="photo" class="form-control" value="{{$profileData->photo}}" />
 											</div>
-											<div class="col-sm-9 text-secondary">
-												<input type="file" name="photo" class="form-control" id="image" value="{{$profileData->photo}}" />
-											</div>
+											
 										</div>
 										<div class="row mb-3">
 											<div class="col-sm-3">
