@@ -27,7 +27,9 @@
 	<link rel="stylesheet" href="{{asset('backend/assets/css/header-colors.css')}}"/>
 	<!-- toastr CSS -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
-	<title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
+	<!-- dataTables CSS -->
+	<link href="{{asset('backend/assets/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
+	<title>Admin Dashboard</title>
 </head>
 
 <body>
@@ -99,6 +101,14 @@
         break; 
      }
      @endif 
+	</script>
+     <!--dataTable JS-->
+	<script src="{{asset('backend/assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{asset('backend/assets/plugins/datatable/js/dataTables.bootstrap5.min.js')}}"></script>
+	<script>
+		$(document).ready(function() {
+			$('#example').DataTable();
+		  } );
 	</script>
 </body>
 
