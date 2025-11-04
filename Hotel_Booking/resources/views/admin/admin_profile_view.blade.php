@@ -102,7 +102,7 @@
 										<div class="col-lg-12 col-md-6">
 											<div class="form-group">
 												<label>User Profile <span class="required">*</span></label>
-												<input type="file" name="photo" class="form-control" value="{{$profileData->photo}}" />
+												<input type="file" name="photo" class="form-control" value="{{$profileData->photo}}" id="image" />
 											</div>
 											
 										</div>

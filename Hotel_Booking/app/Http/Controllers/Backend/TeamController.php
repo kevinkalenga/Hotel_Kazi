@@ -14,4 +14,8 @@ class TeamController extends Controller
         $team = Team::latest()->get();
         return view('backend.team.all_team', compact('team'));
     }
+    public function AddTeam() 
+    {
+       return view('backend.team.add_team');
+    }
 }

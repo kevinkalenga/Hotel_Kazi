@@ -12,9 +12,7 @@
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
-								<button type="button" class="btn btn-outline-primary px-5 radius-30">
-									Add Team
-								</button>
+								<a href="{{route('add.team')}}"  class="btn btn-outline-primary px-5 radius-30"> Add Team</a>
 							</ol>
 						</nav>
 					</div>
