@@ -176,7 +176,12 @@ class TeamController extends Controller
       }
     }
 
+    // =============== Book Area All Methods (can also create a new controller)
 
+    public function BookArea()
+    {
+        
+    }
 
 
 }
