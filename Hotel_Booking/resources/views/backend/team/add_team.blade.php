@@ -26,7 +26,7 @@
 						<div class="row">
 							
 							<div class="col-lg-8">
-							  <form action="{{route('team.store')}}" method="post" enctype="multipart/form-data">
+							  <form id="myForm" action="{{route('team.store')}}" method="post" enctype="multipart/form-data">
 								@csrf
 								<div class="card">
 									<div class="card-body">
@@ -34,7 +34,7 @@
 											<div class="col-sm-3">
 												<h6 class="mb-0">Name</h6>
 											</div>
-											<div class="col-sm-9 text-secondary">
+											<div class="col-sm-9 text-secondary form-groupe">
 												<input type="text" name="name" class="form-control" />
 											</div>
 										</div>
@@ -97,5 +97,57 @@
 				})
 			   })
 			</script>
+
+
+            <script type="text/javascript">
+$(document).ready(function () {
+    $('#myForm').validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            position: {
+                required: true,
+            },
+            facebook: {
+                required: true,
+                url: true, // vérifie si c’est bien une URL valide
+            },
+            image: {
+                required: true,
+                extension: "jpg|jpeg|png|gif", // vérifie que c’est une image
+            },
+        },
+        messages: {
+            name: {
+                required: 'Please enter team name',
+            },
+            position: {
+                required: 'Please enter team position',
+            },
+            facebook: {
+                required: 'Please enter Facebook profile URL',
+                url: 'Please enter a valid URL (https://...)',
+            },
+            image: {
+                required: 'Please select an image',
+                extension: 'Only JPG, JPEG, PNG or GIF files are allowed',
+            },
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.after(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        },
+    });
+});
+</script>
+
 
 @endsection
