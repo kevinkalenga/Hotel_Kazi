@@ -47,8 +47,10 @@
 										<td>{{$item->name}}</td>
 										<td>{{$item->position}}</td>
 										<td>{{$item->facebook}}</td>
-										<a href="" class="btn btn-warning px-3 radius-30"> Edit</a>
-										<a href="" class="btn btn-danger px-3 radius-30"> Delete</a>
+										<td>
+										   <a href="" class="btn btn-warning px-3 radius-30 me-2"> Edit</a>
+										   <a href="" class="btn btn-danger px-3 radius-30"> Delete</a>
+                                        </td>
 									 </tr>
 									@endforeach
 							

@@ -26,7 +26,7 @@
 						<div class="row">
 							
 							<div class="col-lg-8">
-							  <form action="{{route('admin.profile.store')}}" method="post" enctype="multipart/form-data">
+							  <form action="{{route('team.store')}}" method="post" enctype="multipart/form-data">
 								@csrf
 								<div class="card">
 									<div class="card-body">
