@@ -23,66 +23,71 @@ class TeamController extends Controller
     }
     
     // Request so as to get our request data
-  public function StoreTeam(Request $request)
-  {
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'position' => 'required|string|max:255',
-        'facebook' => 'nullable|url',
-        'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
 
-    try {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+    public function StoreTeam(Request $request)
+    {
+        // ✅ Validate request inputs
+        $request->validate([
+            'name'      => 'required|string|max:255',
+            'position'  => 'required|string|max:255',
+            'facebook'  => 'nullable|url',
+            'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-            $uploadPath = public_path('upload/team');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+        try {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+
+                $uploadPath = public_path('upload/team');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                // Use the new Intervention Image v3 syntax
+                $manager = new ImageManager(new Driver());
+                $manager->read($image)
+                    ->resize(550, 670)
+                    ->save($uploadPath . '/' . $name_gen);
+
+                $save_url = 'upload/team/' . $name_gen;
+            } else {
+                return back()->withErrors(['image' => 'No image uploaded.']);
             }
 
-            // Use the new Intervention Image v3 syntax
-            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
-            $manager->read($image)
-                ->resize(550, 670)
-                ->save($uploadPath . '/' . $name_gen);
+            // Save to database
+            Team::insert([
+                'name'       => $request->name,
+                'position'   => $request->position,
+                'facebook'   => $request->facebook,
+                'image'      => $save_url,
+                'created_at' => Carbon::now(),
+            ]);
 
-            $save_url = 'upload/team/' . $name_gen;
-        } else {
-            return back()->withErrors(['image' => 'No image uploaded.']);
+            return redirect()->route('all.team')->with([
+                'message' => 'Team Data Inserted Successfully!',
+                'alert-type' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'error' => 'Something went wrong: ' . $e->getMessage(),
+            ])->withInput();
         }
-
-        Team::insert([
-            'name' => $request->name,
-            'position' => $request->position,
-            'facebook' => $request->facebook,
-            'image' => $save_url,
-            'created_at' => now(),
-        ]);
-        
-
-        $notification = array(
-           'message' => 'Team Data Inserted Successfully!',
-           'alert-type' => 'success'
-        );
-
-        return redirect()->route('all.team')->with($notification);
-        
-      
-    } catch (\Exception $e) {
-        return back()->withErrors(['error' => $e->getMessage()]);
     }
-   }
 
-   public function EditTeam($id)
-   {
-     $team = Team::findOrFail($id);
-     return view('backend.team.edit_team', compact('team'));
-   }
+    public function EditTeam($id)
+    {
+    //Find the specific team record or fail with 404
+    $team = Team::findOrFail($id);
 
-   public function UpdateTeam(Request $request)
-   {
+    //Return the edit view with the team data
+    return view('backend.team.edit_team', compact('team'));
+   }
+  
+  
+  
+  public function UpdateTeam(Request $request)
+  {
     $team_id = $request->id; // hidden input in form
     $team = Team::findOrFail($team_id);
 
@@ -111,7 +116,7 @@ class TeamController extends Controller
                 unlink(public_path($team->image));
             }
 
-            // ✅ Resize & save new image using Intervention v3
+            // Resize & save new image using Intervention v3
             $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
             $manager->read($image)
                 ->resize(550, 670)
@@ -137,8 +142,11 @@ class TeamController extends Controller
     } catch (\Exception $e) {
         return back()->withErrors(['error' => 'Update failed: ' . $e->getMessage()]);
     }
-  }
+}
 
+   
+   
+   
    
    public function DeleteTeam($id)
    {

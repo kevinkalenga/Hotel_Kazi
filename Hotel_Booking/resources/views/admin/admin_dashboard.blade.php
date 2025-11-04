@@ -25,6 +25,8 @@
 	<link rel="stylesheet" href="{{asset('backend/assets/css/dark-theme.css')}}"/>
 	<link rel="stylesheet" href="{{asset('backend/assets/css/semi-dark.css')}}"/>
 	<link rel="stylesheet" href="{{asset('backend/assets/css/header-colors.css')}}"/>
+
+  
 	<!-- toastr CSS -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
 	<!-- dataTables CSS -->
@@ -71,13 +73,19 @@
     <script src="{{asset('backend/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
 	<script src="{{asset('backend/assets/plugins/chartjs/js/chart.js')}}"></script>
 	<script src="{{asset('backend/assets/js/index.js')}}"></script>
-	<!--app JS-->
-	<script src="{{asset('backend/assets/js/app.js')}}"></script>
+
 	<script>
 		new PerfectScrollbar(".app-container")
 	</script>
-
+       
+	    <!-- SweetAlert2 -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	   <!-- Your delete confirmation JS -->
+     <script src="{{asset('backend/assets/js/code.js')}}"></script>
+	 <!-- Toastr -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+		<!--app JS-->
+	<script src="{{asset('backend/assets/js/app.js')}}"></script>
 
 	<script>
       @if(Session::has('message'))
