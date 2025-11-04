@@ -60,11 +60,16 @@ class TeamController extends Controller
             'image' => $save_url,
             'created_at' => now(),
         ]);
+        
 
-        return redirect()->route('all.team')->with([
-            'message' => 'Team Data Inserted Successfully!',
-            'alert-type' => 'success',
-        ]);
+        $notification = array(
+           'message' => 'Team Data Inserted Successfully!',
+           'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.team')->with($notification);
+        
+      
     } catch (\Exception $e) {
         return back()->withErrors(['error' => $e->getMessage()]);
     }
@@ -133,6 +138,36 @@ class TeamController extends Controller
         return back()->withErrors(['error' => 'Update failed: ' . $e->getMessage()]);
     }
   }
+
+   
+   public function DeleteTeam($id)
+   {
+     try {
+        //  1. Find the team record
+        $team = Team::findOrFail($id);
+
+        //  2. Delete the old image file (if it exists)
+        if ($team->image && file_exists(public_path($team->image))) {
+            unlink(public_path($team->image));
+        }
+
+        //  3. Delete the record from the database
+        $team->delete();
+
+        //  4. Redirect with success notification
+        return redirect()->route('all.team')->with([
+            'message' => 'Team Member Deleted Successfully!',
+            'alert-type' => 'success',
+        ]);
+
+      } catch (\Exception $e) {
+        //  Handle unexpected errors gracefully
+        return back()->withErrors([
+            'error' => 'Deletion failed: ' . $e->getMessage(),
+        ]);
+      }
+    }
+
 
 
 
