@@ -185,5 +185,63 @@ class TeamController extends Controller
         return view('backend.bookarea.book_area', compact('book'));
     }
 
+    
+    public function BookAreaUpdate(Request $request)
+   {
+    $book_id = $request->id; // hidden input in the form
+    $book = BookArea::findOrFail($book_id);
+
+    $request->validate([
+        'short_title' => 'required|string|max:255',
+        'main_title'  => 'required|string|max:255',
+        'short_desc'  => 'required|string|max:255',
+        'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    try {
+        $save_url = $book->image; // default to old image
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+
+            $uploadPath = public_path('upload/bookarea');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Delete old image if exists
+            if ($book->image && file_exists(public_path($book->image))) {
+                unlink(public_path($book->image));
+            }
+
+            // Resize & save new image
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $manager->read($image)
+                ->resize(1000, 1000)
+                ->save($uploadPath . '/' . $name_gen);
+
+            $save_url = 'upload/bookarea/' . $name_gen;
+        }
+
+        // ✅ Update BookArea record
+        $book->update([
+            'short_title' => $request->short_title,
+            'main_title'  => $request->main_title,
+            'short_desc'  => $request->short_desc,
+            'image'       => $save_url,
+            'updated_at'  => now(),
+        ]);
+
+        return redirect()->back()->with([
+            'message' => 'Book Area Updated Successfully!',
+            'alert-type' => 'success',
+        ]);
+
+    } catch (\Exception $e) {
+        return back()->withErrors(['error' => 'Update failed: ' . $e->getMessage()]);
+    }
+   }
+
 
 }

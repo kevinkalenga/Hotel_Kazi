@@ -26,8 +26,9 @@
 						<div class="row">
 							
 							<div class="col-lg-8">
-							  <form id="myForm" action="{{route('team.store')}}" method="post" enctype="multipart/form-data">
+							  <form id="myForm" action="{{route('book.area.update')}}" method="post" enctype="multipart/form-data">
 								@csrf
+								<input type="hidden" name="id" value="{{$book->id}}">
 								<div class="card">
 									<div class="card-body">
 										<div class="row mb-3">
