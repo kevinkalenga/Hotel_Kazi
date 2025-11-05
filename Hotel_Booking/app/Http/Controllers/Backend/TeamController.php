@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Team;
+use App\Models\BookArea;
 use Carbon\Carbon;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -180,7 +181,8 @@ class TeamController extends Controller
 
     public function BookArea()
     {
-        
+        $book = BookArea::find(1);
+        return view('backend.bookarea.book_area', compact('book'));
     }
 
 
