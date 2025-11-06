@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\Backend\RoomTypeController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -59,6 +60,13 @@ Route::middleware(['auth',  'adminRole:admin'])->group(function() {
     Route::controller(TeamController::class)->group(function() {
         Route::get('/book/area', 'BookArea')->name('book.area');
         Route::post('/book/area/update', 'BookAreaUpdate')->name('book.area.update');
+      
+    });
+    // RoomType All Routes
+
+    Route::controller(RoomTypeController::class)->group(function() {
+       
+        Route::get('/room/type/list', 'RoomTypeList')->name('room.type.list');
       
     });
 
