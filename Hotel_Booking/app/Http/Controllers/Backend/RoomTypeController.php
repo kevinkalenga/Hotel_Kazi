@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RoomType;
 use App\Models\BookArea;
+use App\Models\Room;
 use Carbon\Carbon;
 use Intervention\Image\ImageManager;
 
@@ -23,9 +24,13 @@ class RoomTypeController extends Controller
     }
     public function RoomTypeStore(Request $request)
     {
-      RoomType::insert([
+      $roomtype_id = RoomType::insertGetId([
         'name' => $request->name,
         'created_at' => Carbon::now()
+      ]);
+
+      Room::insert([
+        'roomtype_id' => $roomtype_id,
       ]);
 
       $notification = array(
