@@ -37,23 +37,24 @@
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($allData as $key=>$item)
+								  @foreach($allData as $key=>$item)
 									@php  
                                       $rooms = App\Models\Room::where('roomtype_id', $item->id)->get();
 									@endphp
-									 <tr>
+									  <tr>
 										<td>{{$key+1}}</td>
 										<td>
 											<img style="width:50px; height:30px;" src="{{(!empty($item->room->image)) ? url('upload/roomimg/'.$item->room-image) : url('upload/default_avatar.jpg') }}" alt="">
 										</td>
 										<td>{{$item->name}}</td>
-										
-										<td>
-										   <a href="{{route('edit.team', $item->id)}}" class="btn btn-warning px-3 radius-30 me-2"> Edit</a>
-										   <a href="{{route('delete.team', $item->id)}}" class="btn btn-danger px-3 radius-30 delete-button"> Delete</a>
-                                        </td>
-									 </tr>
-									@endforeach
+									   @foreach($rooms as $roo)	
+										  <td>
+										    <a href="{{route('edit.room', $roo->id)}}" class="btn btn-warning px-3 radius-30 me-2"> Edit</a>
+										    <a href="{{route('edit.team', $roo->id)}}" class="btn btn-danger px-3 radius-30 delete-button"> Delete</a>
+                                          </td>
+									   @endforeach
+									  </tr>
+								  @endforeach
 							
 								</tbody>
 							
