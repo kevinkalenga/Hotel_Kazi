@@ -41,24 +41,63 @@
 						
 						<div class="card">
 							<div class="card-body p-4">
-								<h5 class="mb-4">Vertical Form</h5>
+								<h5 class="mb-4">Update Room</h5>
 								<form class="row g-3">
-									<div class="col-md-6">
-										<label for="input1" class="form-label">First Name</label>
-										<input type="text" class="form-control" id="input1" placeholder="First Name">
+									<div class="col-md-4">
+										<label for="input1" class="form-label">Room Type Name</label>
+										<input type="text" name="roomtype_id" class="form-control" id="input1" value="{{$editData['type']['name']}}">
+									</div>
+									<div class="col-md-4">
+										<label for="input2" class="form-label">Total Adult</label>
+										<input type="text" name="total_adult" class="form-control" id="input2" value="{{$editData->total_adult}}">
+									</div>
+									<div class="col-md-4">
+										<label for="input2" class="form-label">Total Child</label>
+										<input type="text" name="total_child" class="form-control" id="input2" value="{{$editData->total_child}}">
 									</div>
 									<div class="col-md-6">
-										<label for="input2" class="form-label">Last Name</label>
-										<input type="text" class="form-control" id="input2" placeholder="Last Name">
+										<label for="input3" class="form-label">Main Image</label>
+										<input type="file" name="image" class="form-control" id="input3" placeholder="Phone">
 									</div>
-									<div class="col-md-12">
-										<label for="input3" class="form-label">Phone</label>
-										<input type="text" class="form-control" id="input3" placeholder="Phone">
+									<div class="col-md-6">
+										<label for="input4" class="form-label">Gallery Image</label>
+										<input type="file" name="multi_img[]" class="form-control" id="multiImg" accept="image/jpeg, image/jpg, image/gif, image/png">
 									</div>
-									<div class="col-md-12">
-										<label for="input4" class="form-label">Email</label>
-										<input type="email" class="form-control" id="input4" placeholder="Email">
+									
+									<div class="col-md-4">
+										<label for="input1" class="form-label">Room Price</label>
+										<input type="text" name="price" class="form-control" id="input1" value="{{$editData->price}}">
 									</div>
+									<div class="col-md-4">
+										<label for="input2" class="form-label">Discount (%)</label>
+										<input type="text" name="discount" class="form-control" id="input2" value="{{$editData->discount}}">
+									</div>
+									<div class="col-md-4">
+										<label for="input2" class="form-label">Room Capacity</label>
+										<input type="text" name="room_capacity" class="form-control" id="input2" value="{{$editData->room_capacity}}">
+									</div>
+									
+									<div class="col-md-6">
+										<label for="input7" class="form-label">Room View</label>
+										<select name="view" id="input7" class="form-select">
+											<option selected="">Choose...</option>
+											<option value="Sea View">Sea View</option>
+											<option value="Hill View">Hill View</option>
+											
+										</select>
+									</div>
+									<div class="col-md-6">
+										<label for="input7" class="form-label">Bed Style</label>
+										<select name="bed_style" id="input7" class="form-select">
+											<option selected="">Choose...</option>
+											<option value="Queen Bed"> Queen Bed</option>
+											<option value="Twin Bed">Twin Bed </option>
+											<option value="King Bed">King Bed</option>
+										</select>
+									</div>
+									
+									
+									
 									<div class="col-md-12">
 										<label for="input5" class="form-label">Password</label>
 										<input type="password" class="form-control" id="input5" placeholder="Password">

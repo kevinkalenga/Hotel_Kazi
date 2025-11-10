@@ -8,4 +8,8 @@ class Room extends Model
 {
      //All our field will be fillable
      protected $guarded = [];
+        public function type()
+     {
+          return $this->belongsTo(RoomType::class, 'roomtype_id', 'id');
+     }
 }
