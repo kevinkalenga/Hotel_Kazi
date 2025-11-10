@@ -113,6 +113,145 @@
 										</textarea>
 									</div>
 									
+									    <div class="row mt-2">
+ 
+	
+		                   @php
+    $allFacilities = [
+        'Complimentary Breakfast',
+        '32/42 inch LED TV',
+        'Smoke alarms',
+        'Minibar',
+        'Work Desk',
+        'Free Wi-Fi',
+        'Safety box',
+        'Rain Shower',
+        'Slippers',
+        'Hair dryer',
+        'Wake-up service',
+        'Laundry & Dry Cleaning',
+        'Electronic door lock'
+    ];
+@endphp
+	
+
+									
+
+<div class="col-md-12 mb-3">
+    <label for="facility_name" class="form-label">Room Facilities</label>
+
+    <div id="facility_wrapper">
+        @forelse ($basic_facility as $facility)
+        <div class="facility_item row mb-2">
+            <div class="col-md-10">
+                <select name="facility_name[]" class="form-control">
+                    <option value="">Select Facility</option>
+                    @foreach($allFacilities as $f)
+                        <option value="{{ $f }}" {{ $f == $facility ? 'selected' : '' }}>{{ $f }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-center">
+                <button type="button" class="btn btn-success add_facility me-1">
+                    <i class="lni lni-circle-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger remove_facility">
+                    <i class="lni lni-circle-minus"></i>
+                </button>
+            </div>
+        </div>
+        @empty
+        <div class="facility_item row mb-2">
+            <div class="col-md-10">
+                <select name="facility_name[]" class="form-control">
+                    <option value="">Select Facility</option>
+                    @foreach($allFacilities as $f)
+                        <option value="{{ $f }}">{{ $f }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-center">
+                <button type="button" class="btn btn-success add_facility me-1">
+                    <i class="lni lni-circle-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger remove_facility">
+                    <i class="lni lni-circle-minus"></i>
+                </button>
+            </div>
+        </div>
+        @endforelse
+    </div>
+</div>
+
+{{-- Hidden template for cloning --}}
+<div id="facility_template" class="d-none">
+    <div class="facility_item row mb-2">
+        <div class="col-md-10">
+            <select name="facility_name[]" class="form-control">
+                <option value="">Select Facility</option>
+                @foreach($allFacilities as $f)
+                    <option value="{{ $f }}">{{ $f }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+            <button type="button" class="btn btn-success add_facility me-1">
+                <i class="lni lni-circle-plus"></i>
+            </button>
+            <button type="button" class="btn btn-danger remove_facility">
+                <i class="lni lni-circle-minus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- Add / Remove Facilities --}}
+<script>
+$(document).ready(function () {
+    // Add new facility
+    $(document).on('click', '.add_facility', function () {
+        let newFacility = $('#facility_template').html();
+        $('#facility_wrapper').append(newFacility);
+    });
+
+    // Remove facility
+    $(document).on('click', '.remove_facility', function () {
+        $(this).closest('.facility_item').remove();
+    });
+});
+</script>
+
+									
+									
+
+
+
+
+
+{{-- Hidden template for cloning --}}
+<div id="facility_template" class="d-none">
+    <div class="facility_item row mb-2">
+        <div class="col-md-10">
+            <select name="facility_name[]" class="form-control">
+                <option value="">Select Facility</option>
+                @foreach($allFacilities as $f)
+                    <option value="{{ $f }}">{{ $f }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+            <button type="button" class="btn btn-success add_facility me-1"><i class="lni lni-circle-plus"></i></button>
+            <button type="button" class="btn btn-danger remove_facility"><i class="lni lni-circle-minus"></i></button>
+        </div>
+    </div>
+</div>									
+									
+									
+									
+									
+									
+									
+									
 									<div class="col-md-12">
 										<div class="d-md-flex d-grid align-items-center gap-3">
 											<button type="submit" class="btn btn-primary px-4">Change Save</button>
@@ -202,5 +341,11 @@
     });
    });
 </script>
+
+
+<!--========== Start of add Basic Plan Facilities ==============-->
+
+<!--========== End of Basic Plan Facilities ==============-->
+
 
 @endsection
