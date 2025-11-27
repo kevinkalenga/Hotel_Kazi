@@ -73,8 +73,31 @@ class RoomController extends Controller
     // Sauvegarde en DB
     $room->save();
 
-    return redirect()->back()->with('success', 'Room updated successfully !');
-   }
+    //  Update for Facility Table 
+    if($request->facility_name == NULL) {
+         return redirect()->back()->with([
+                'message' => 'Sorry! Not Any Basic Facility Select',
+                'alert-type' => 'error',
+        ]);
+    } else {
+        Facility::where('rooms_id', $id)->delete();
+        $faciities = count($request->facility_name);
+
+        for($i=0; $i < $faciities; $i++) {
+            $fcount = new Facility();
+            $fcount->rooms_id = $room->id;
+            $fcount->facility_name = $request->facility_name[$i];
+            $fcount->save();
+        }
+    }
+    
+    
+    
+     return redirect()->back()->with('success', 'Room updated successfully !');
+   
+
+
+  }
 
     
     
