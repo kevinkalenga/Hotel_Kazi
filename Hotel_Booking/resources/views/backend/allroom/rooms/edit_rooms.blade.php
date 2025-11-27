@@ -42,7 +42,9 @@
 						<div class="card">
 							<div class="card-body p-4">
 								<h5 class="mb-4">Update Room</h5>
-								<form class="row g-3">
+								<form class="row g-3" action="{{route('update.room', $editData->id)}}" method="post" 
+								       enctype="multipart/form-data">
+									   @csrf
 									<div class="col-md-4">
 										<label for="input1" class="form-label">Room Type Name</label>
 										<input type="text" name="roomtype_id" class="form-control" id="input1" value="{{$editData['type']['name']}}">
@@ -67,15 +69,19 @@
 										<div class="row" id="preview_img"></div>
 									</div>
 									
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<label for="input1" class="form-label">Room Price</label>
 										<input type="text" name="price" class="form-control" id="input1" value="{{$editData->price}}">
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
+										<label for="input2" class="form-label">Size (%)</label>
+										<input type="text" name="size" class="form-control" id="input2" value="{{$editData->size}}">
+									</div>
+									<div class="col-md-3">
 										<label for="input2" class="form-label">Discount (%)</label>
 										<input type="text" name="discount" class="form-control" id="input2" value="{{$editData->discount}}">
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<label for="input2" class="form-label">Room Capacity</label>
 										<input type="text" name="room_capacity" class="form-control" id="input2" value="{{$editData->room_capacity}}">
 									</div>

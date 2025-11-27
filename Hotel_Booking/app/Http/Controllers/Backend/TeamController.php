@@ -120,7 +120,7 @@ class TeamController extends Controller
             // Resize & save new image using Intervention v3
             $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
             $manager->read($image)
-                ->resize(550, 670)
+                ->resize(550, 850)
                 ->save($uploadPath . '/' . $name_gen);
 
             $save_url = 'upload/team/' . $name_gen;
