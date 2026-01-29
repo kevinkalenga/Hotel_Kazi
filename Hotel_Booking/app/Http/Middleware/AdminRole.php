@@ -18,6 +18,7 @@ class AdminRole
         $user = $request->user();
 
         if (!$user || $user->role !== $role) {
+            //if you are not login as an admin
             return redirect('/dashboard');
         }
         

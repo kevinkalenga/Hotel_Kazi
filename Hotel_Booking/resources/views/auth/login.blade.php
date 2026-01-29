@@ -30,7 +30,7 @@
                                     <h2>Sign In to Your Account!</h2>
                                 </div>
                                 
-                                <form method="POST" action="{{ route('login') }}">
+                                <form method="POST" action="{{ route('login') }}" novalidate>
                                     @csrf
                                     
                                     

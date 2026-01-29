@@ -40,7 +40,13 @@ Route::middleware(['auth',  'adminRole:admin'])->group(function() {
     Route::post('/admin/password/update', [AdminController::class, 'AdminPasswordUpdate'])->name('admin.password.update');
 });
 
-Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.login');
+// Test
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/admin/login', [AdminController::class, 'AdminLogin'])
+        ->name('admin.login');
+});
+
+
 
 
 
