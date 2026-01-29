@@ -21,9 +21,13 @@ class RoomController extends Controller
 
        // Decode the facility_name JSON column (assuming it stores multiple facilities)
        // If it’s stored as plain text for single facility, you can wrap it in an array
-        $basic_facility = json_decode($editData->facility_name, true) ?? [$editData->facility_name];
+       $basic_facility = Facility::where('rooms_id', $id)
+                    ->pluck('facility_name')
+                    ->toArray();
+        $multiImages = MultiImage::where('rooms_id', $id)->get();
 
-        return view('backend.allroom.rooms.edit_rooms', compact('editData', 'basic_facility'));
+
+        return view('backend.allroom.rooms.edit_rooms', compact('editData', 'basic_facility', 'multiImages'));
     }
 
 

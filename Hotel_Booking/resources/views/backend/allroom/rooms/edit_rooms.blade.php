@@ -47,7 +47,9 @@
 									   @csrf
 									<div class="col-md-4">
 										<label for="input1" class="form-label">Room Type Name</label>
-										<input type="text" name="roomtype_id" class="form-control" id="input1" value="{{$editData['type']['name']}}">
+										<input type="hidden" name="roomtype_id" value="{{ $editData->roomtype_id }}">
+                                        <input type="text" class="form-control" value="{{ $editData->type->name }}" readonly>
+
 									</div>
 									<div class="col-md-4">
 										<label for="input2" class="form-label">Total Adult</label>
@@ -60,13 +62,28 @@
 									<div class="col-md-6">
 										<label for="input3" class="form-label">Main Image</label>
 										<input type="file" name="image" class="form-control" id="image" placeholder="Phone">
-										<img id="showImage" src="{{(!empty($editData->image)) ? url('upload/rooming/'.$editData->image) : url('upload/default_avatar.jpg')}}" alt="Admin" class="p-1 my-2 bg-primary" width="60">
+										 <img id="showImage"
+                                           src="{{ (!empty($editData->image) && file_exists(public_path($editData->image)))
+                                              ? asset($editData->image)
+                                              : asset('upload/default_avatar.jpg') }}"
+                                           width="60">
+
+
 									</div>
 									<div class="col-md-6">
 										<label for="input4" class="form-label">Gallery Image</label>
 										<input multiple type="file" name="multi_img[]" class="form-control" id="multiImg" accept="image/jpeg, image/jpg, image/gif, image/png">
 
-										<div class="row" id="preview_img"></div>
+										  <div class="row">
+                                             @foreach($multiImages as $img)
+                                                 <div class="col-md-2 mb-2">
+                                                     <img src="{{ asset('upload/rooming/multi_img/'.$img->multi_img) }}"
+                                                          class="img-thumbnail" width="100">
+                                                 </div>
+                                             @endforeach
+                                            </div>
+										
+										 <div class="row" id="preview_img"></div>
 									</div>
 									
 									<div class="col-md-3">
@@ -90,8 +107,8 @@
 										<label for="input7" class="form-label">Room View</label>
 										<select name="view" id="input7" class="form-select">
 											<option selected="">Choose...</option>
-											<option value="Sea View">Sea View</option>
-											<option value="Hill View">Hill View</option>
+										    <option value="Sea View" {{ $editData->view == 'Sea View' ? 'selected' : '' }}>Sea View</option>
+                                            <option value="Hill View" {{ $editData->view == 'Hill View' ? 'selected' : '' }}>Hill View</option>
 											
 										</select>
 									</div>
@@ -99,9 +116,9 @@
 										<label for="input7" class="form-label">Bed Style</label>
 										<select name="bed_style" id="input7" class="form-select">
 											<option selected="">Choose...</option>
-											<option value="Queen Bed"> Queen Bed</option>
-											<option value="Twin Bed">Twin Bed </option>
-											<option value="King Bed">King Bed</option>
+											<option value="Queen Bed" {{ $editData->bed_style == 'Queen Bed' ? 'selected' : '' }}>Queen Bed</option>
+                                            <option value="Twin Bed" {{ $editData->bed_style == 'Twin Bed' ? 'selected' : '' }}>Twin Bed</option>
+                                            <option value="King Bed" {{ $editData->bed_style == 'King Bed' ? 'selected' : '' }}>King Bed</option>
 										</select>
 									</div>
 									
