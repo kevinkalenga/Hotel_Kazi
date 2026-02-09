@@ -224,7 +224,7 @@ class TeamController extends Controller
             $save_url = 'upload/bookarea/' . $name_gen;
         }
 
-        // ✅ Update BookArea record
+        //  Update BookArea record
         $book->update([
             'short_title' => $request->short_title,
             'main_title'  => $request->main_title,

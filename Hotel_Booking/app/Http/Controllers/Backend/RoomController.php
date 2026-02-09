@@ -134,6 +134,30 @@ class RoomController extends Controller
 
   }
 
+  
+  public function MultiImageDelete($id)
+  {
+    // Récupérer l'image par ID
+    $image = MultiImage::findOrFail($id);
+
+    // Chemin de l'image
+    $imagePath = public_path('upload/rooming/multi_img/' . $image->multi_img);
+
+    // Supprimer le fichier s'il existe
+    if (file_exists($imagePath)) {
+        unlink($imagePath);
+    }
+
+    // Supprimer l'enregistrement en base de données
+    $image->delete();
+
+    return redirect()->back()->with([
+        'message' => 'Multi Image Deleted Successfully',
+        'alert-type' => 'success',
+    ]);
+  }
+
+
     
     
 

@@ -66,7 +66,7 @@
                                            src="{{ (!empty($editData->image) && file_exists(public_path($editData->image)))
                                               ? asset($editData->image)
                                               : asset('upload/default_avatar.jpg') }}"
-                                           width="60">
+                                           width="70" height="50">
 
 
 									</div>
@@ -79,7 +79,11 @@
                                                  <div class="col-md-2 mb-2">
                                                      <img src="{{ asset('upload/rooming/multi_img/'.$img->multi_img) }}"
                                                           class="img-thumbnail" width="100">
+                                                           <a href="{{route('multi.image.delete', $img->id)}}" onclick="return confirm('Are you sure you want to delete this image?')">
+                                                              <li class="lni lni-close"></li>
+                                                           </a>
                                                  </div>
+                                                
                                              @endforeach
                                             </div>
 										
@@ -136,26 +140,26 @@
 										</textarea>
 									</div>
 									
-									    <div class="row mt-2">
+									<div class="row mt-2">
  
 	
-		                   @php
-    $allFacilities = [
-        'Complimentary Breakfast',
-        '32/42 inch LED TV',
-        'Smoke alarms',
-        'Minibar',
-        'Work Desk',
-        'Free Wi-Fi',
-        'Safety box',
-        'Rain Shower',
-        'Slippers',
-        'Hair dryer',
-        'Wake-up service',
-        'Laundry & Dry Cleaning',
-        'Electronic door lock'
-    ];
-@endphp
+		                             @php
+                                        $allFacilities = [
+                                            'Complimentary Breakfast',
+                                            '32/42 inch LED TV',
+                                            'Smoke alarms',
+                                            'Minibar',
+                                            'Work Desk',
+                                            'Free Wi-Fi',
+                                            'Safety box',
+                                            'Rain Shower',
+                                            'Slippers',
+                                            'Hair dryer',
+                                            'Wake-up service',
+                                            'Laundry & Dry Cleaning',
+                                            'Electronic door lock'
+                                           ];
+                                        @endphp
 	
 
 									

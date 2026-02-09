@@ -44,7 +44,7 @@
 									  <tr>
 										<td>{{$key+1}}</td>
 										<td>
-											<img style="width:50px; height:30px;" src="{{(!empty($item->room->image)) ? url('upload/roomimg/'.$item->room-image) : url('upload/default_avatar.jpg') }}" alt="">
+											<img style="width:50px; height:30px;" src="{{(!empty($item->rooms->image)) ? url('upload/roomimg/'.$item->rooms->image) : url('upload/default_avatar.jpg') }}" alt="">
 										</td>
 										<td>{{$item->name}}</td>
 									   @foreach($rooms as $roo)	

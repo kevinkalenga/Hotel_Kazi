@@ -83,6 +83,7 @@ Route::middleware(['auth',  'adminRole:admin'])->group(function() {
     Route::controller(RoomController::class)->group(function() {
        
         Route::get('/edit/room/{id}', 'EditRoom')->name('edit.room');
+        Route::get('/multi/image/delete/{id}', 'MultiImageDelete')->name('multi.image.delete');
         Route::post('/update/room/{id}', 'updateRoom')->name('update.room');
        
       
