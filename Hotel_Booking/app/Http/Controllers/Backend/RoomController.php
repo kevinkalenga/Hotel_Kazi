@@ -26,9 +26,10 @@ class RoomController extends Controller
                     ->pluck('facility_name')
                     ->toArray();
         $multiImages = MultiImage::where('rooms_id', $id)->get();
+        
+        $allRoomNo = RoomNumber::where('rooms_id', $id)->get();
 
-
-        return view('backend.allroom.rooms.edit_rooms', compact('editData', 'basic_facility', 'multiImages'));
+        return view('backend.allroom.rooms.edit_rooms', compact('editData', 'basic_facility', 'multiImages', 'allRoomNo'));
     }
 
 

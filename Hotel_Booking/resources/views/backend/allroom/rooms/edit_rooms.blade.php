@@ -238,6 +238,7 @@
                                 <!-- Ici -->
                                     <table class="table mb-0 table-striped" id="roomview">
                                        <thead>
+                                       
                                            <tr>
                                                <th scope="col">Room Number</th>
                                                <th scope="col">Status</th>
@@ -245,17 +246,18 @@
                                            </tr>
                                        </thead>
                                        <tbody>
-                                          <tr>
+                                        @foreach($allRoomNo as $item)
+                                            <tr>
                      
-                                              <td>Mark</td>
-                                              <td>Otto</td>
+                                              <td>{{$item->room_no}}</td>
+                                              <td>{{$item->status}}</td>
                                               <td>
                                                  <a href=" " class="btn btn-warning px-3 radius-30"> Edit</a>
                                                  <a href=" " class="btn btn-danger px-3 radius-30" id="delete"> Delete</a>  
 
                                               </td>
-                                          </tr>
-                
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
 
