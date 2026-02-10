@@ -25,6 +25,10 @@
 	<link rel="stylesheet" href="{{asset('backend/assets/css/dark-theme.css')}}"/>
 	<link rel="stylesheet" href="{{asset('backend/assets/css/semi-dark.css')}}"/>
 	<link rel="stylesheet" href="{{asset('backend/assets/css/header-colors.css')}}"/>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+
+
 
   
 	<!-- toastr CSS -->
