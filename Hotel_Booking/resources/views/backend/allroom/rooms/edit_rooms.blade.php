@@ -213,9 +213,9 @@
                                 </button>
 
                                 <div id="roomnoHide" style="display:none;">
-                                    <form action="#" method="POST" class="row g-3">
+                                    <form action="{{route('store.room.no', $editData->id)}}" method="POST" class="row g-3">
                                         @csrf
-                                        <input type="hidden" name="room_id" value="{{ $editData->id }}">
+                                        <input type="hidden" name="room_type_id" value="{{ $editData->id }}">
                                         <div class="col-md-4">
                                             <label class="form-label">Room No</label>
                                             <input type="text" name="room_no" class="form-control" required>

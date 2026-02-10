@@ -156,7 +156,23 @@ class RoomController extends Controller
         'message' => 'Multi Image Deleted Successfully',
         'alert-type' => 'success',
     ]);
-  }
+   }
+
+   public function StoreRoomNumber(Request $request, $id)
+   {
+        $data = new RoomNumber;
+        $data->rooms_id = $id;
+        $data->room_type_id = $request->room_type_id;
+        $data->room_no = $request->room_no;
+        $data->status = $request->status;
+        $data->save();
+
+
+          return redirect()->back()->with([
+                'message' => 'Room Number Added Successfully',
+                'alert-type' => 'success',
+        ]);
+   }
 
 
     
