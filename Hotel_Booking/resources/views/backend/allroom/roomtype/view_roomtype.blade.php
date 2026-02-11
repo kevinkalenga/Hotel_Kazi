@@ -38,13 +38,17 @@
 								</thead>
 								<tbody>
 								  @foreach($allData as $key=>$item)
-									@php  
-                                      $rooms = App\Models\Room::where('roomtype_id', $item->id)->get();
+									@php 
+									    $rooms = $item->rooms; // collection des chambres du type
+                                        $firstRoom = $rooms->first(); // première chambre pour l'image
 									@endphp
 									  <tr>
 										<td>{{$key+1}}</td>
 										<td>
-											<img style="width:50px; height:30px;" src="{{(!empty($item->rooms->image)) ? url('upload/roomimg/'.$item->rooms->image) : url('upload/default_avatar.jpg') }}" alt="">
+											<img style="width:50px; height:30px;" src="{{ $firstRoom && $firstRoom->image
+                                              ? asset($firstRoom->image)  
+                                               : asset('upload/default_avatar.jpg') }}"
+                                            alt="">
 										</td>
 										<td>{{$item->name}}</td>
 									   @foreach($rooms as $roo)	
