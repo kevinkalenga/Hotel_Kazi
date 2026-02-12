@@ -27,12 +27,12 @@ class TeamController extends Controller
 
     public function StoreTeam(Request $request)
     {
-        // ✅ Validate request inputs
+        // Validate request inputs
         $request->validate([
             'name'      => 'required|string|max:255',
             'position'  => 'required|string|max:255',
             'facebook'  => 'nullable|url',
-            'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image'     => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         try {
@@ -96,7 +96,7 @@ class TeamController extends Controller
         'name'      => 'required|string|max:255',
         'position'  => 'required|string|max:255',
         'facebook'  => 'nullable|url',
-        'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
     try {
@@ -195,7 +195,7 @@ class TeamController extends Controller
         'short_title' => 'required|string|max:255',
         'main_title'  => 'required|string|max:255',
         'short_desc'  => 'required|string|max:255',
-        'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
     try {

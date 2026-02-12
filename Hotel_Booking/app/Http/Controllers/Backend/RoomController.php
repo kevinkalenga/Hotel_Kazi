@@ -8,6 +8,7 @@ use App\Models\Room;
 use App\Models\Facility;
 use App\Models\MultiImage;
 use App\Models\RoomNumber;
+use App\Models\RoomType;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Carbon\Carbon;
@@ -203,7 +204,52 @@ class RoomController extends Controller
                 'alert-type' => 'success',
         ]);
    }
-    
+  
+
+   
+  public function DeleteRoom($id)
+  {
+    // Récupérer la room ou échouer si elle n'existe pas
+    $room = Room::with(['multiImages', 'facilities', 'roomNumbers'])->findOrFail($id);
+
+    // Supprimer l'image principale
+    if ($room->image && file_exists(public_path($room->image))) {
+        unlink(public_path($room->image));
+    }
+
+    // Supprimer les multi-images
+    foreach ($room->multiImages as $img) {
+        $path = public_path('upload/rooming/multi_img/' . $img->multi_img);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $img->delete();
+    }
+
+    // Supprimer les facilities
+    $room->facilities()->delete();
+
+    // Supprimer les numéros de chambre
+    $room->roomNumbers()->delete();
+
+    // Supprimer la room elle-même
+    $room->delete();
+
+      // Supprimer le type si plus aucune room n’existe
+    $type = $room->type;
+    if ($type && $type->rooms()->count() === 0) {
+        $type->delete();
+    }
+
+    // Rediriger vers le dashboard avec message
+    return redirect()->route('room.type.list')->with([
+        'message' => 'Room Deleted Successfully',
+        'alert-type' => 'success',
+    ]);
+  }
+
+
+ 
     
 
 }
