@@ -8,6 +8,8 @@ use App\Http\Controllers\Backend\TeamController;
 use App\Http\Controllers\Backend\RoomTypeController;
 use App\Http\Controllers\Backend\RoomController;
 
+use App\Http\Controllers\Frontend\FrontendRoomController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -95,6 +97,18 @@ Route::middleware(['auth',  'adminRole:admin'])->group(function() {
     });
 
 });
+
+
+// Room All Routes
+
+Route::controller(FrontendRoomController::class)->group(function() {
+       
+        Route::get('/rooms', 'AllFrontendRoomList')->name('froom.all');
+     
+       
+});
+
+
 
 
 
