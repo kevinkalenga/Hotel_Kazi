@@ -19,6 +19,7 @@
                         <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                             <ul class="navbar-nav m-auto">
                                 <li class="nav-item">
+                                    <!-- l'url par defaut de laravel -->
                                     <a href="{{url('/')}}" class="nav-link active">
                                         Home 
                                        
