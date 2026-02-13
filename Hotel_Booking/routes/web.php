@@ -105,6 +105,7 @@ Route::controller(FrontendRoomController::class)->group(function() {
        
         Route::get('/rooms', 'AllFrontendRoomList')->name('froom.all');
         Route::get('/room/details/{id}', 'RoomDetailsPage'); // on utilise url on aura pas besoin de nom de la route
+        Route::get('/bookings', 'BookingSearch')->name('booking.search'); 
      
        
 });

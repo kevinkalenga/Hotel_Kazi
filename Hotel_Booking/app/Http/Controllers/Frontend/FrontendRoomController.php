@@ -9,6 +9,7 @@ use App\Models\Room;
 use App\Models\MultiImage;
 use App\Models\Facility;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Intervention\Image\ImageManager;
 
 class FrontendRoomController extends Controller
@@ -36,6 +37,25 @@ class FrontendRoomController extends Controller
         'facility',
         'otherRooms'
       ));
+    }
+
+    public function BookingSearch(Request $request)
+    {
+      // flash is used to store data into the session for a single request
+        $request->flash();
+        if($request->check_in == $request->check_out) {
+          $notification = array(
+            'message' => 'Something went wrong',
+            'alert-type' => 'error'
+          );
+           return redirect()->back()->with($notification);
+
+        }
+
+        $startDate = date('Y-m-d', strtotime($request->check_in));
+        $endDate = date('Y-m-d', strtotime($request->check_out));
+        $allDate = Carbon::create($endDate)->subDay();
+        $d_period = CarbonPeriod::create($startDate, $allDate);
     }
 
 }
