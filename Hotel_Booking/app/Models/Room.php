@@ -30,7 +30,7 @@ class Room extends Model
     // Relation vers RoomNumber
     public function roomNumbers()
     {
-        return $this->hasMany(RoomNumber::class, 'rooms_id', 'id');
+        return $this->hasMany(RoomNumber::class, 'rooms_id', 'id')->where('status', 'active');
     }
 }
 

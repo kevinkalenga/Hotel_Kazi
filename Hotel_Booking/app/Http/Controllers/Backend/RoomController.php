@@ -39,16 +39,17 @@ class RoomController extends Controller
     $room = Room::findOrFail($id);
      // all our db fields first and all request from the template
     // Mise à jour des champs simples
-    $room->total_adult     = $request->total_adult;
-    $room->total_child     = $request->total_child;
-    $room->room_capacity   = $request->room_capacity;
-    $room->price           = $request->price;
-    $room->size            = $request->size;
-    $room->view            = $request->view;
-    $room->bed_style       = $request->bed_style;
-    $room->discount        = $request->discount;
-    $room->short_desc      = $request->short_desc;
-    $room->description     = $request->description;
+    $room->total_adult   = $request->total_adult;
+    $room->total_child   = $request->total_child;
+    $room->room_capacity = $request->room_capacity;
+    $room->price         = $request->price;
+    $room->size          = $request->size;
+    $room->view          = $request->view;
+    $room->bed_style     = $request->bed_style;
+    $room->discount      = $request->discount;
+    $room->short_desc    = $request->short_desc;
+    $room->description   = $request->description;
+    $room->status = 1;
 
     // Gestion de l'image
     if ($request->hasFile('image')) {
