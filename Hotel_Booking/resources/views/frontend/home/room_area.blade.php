@@ -19,7 +19,7 @@
                             <div class="row align-items-center">
                                 <div class="col-lg-5 col-md-4 p-0">
                                     <div class="room-card-img">
-                                        <a href="room-details.html">
+                                        <a href="{{url('room/details/'.$item->id)}}">
                                             <img src="{{asset($item->image)}}" alt="Images">
                                         </a>
                                     </div>
@@ -29,7 +29,7 @@
                                     <div class="room-card-content">
                                          <h3>
                                             <!-- relation -->
-                                             <a href="room-details.html">{{$item['type']['name']}}</a>
+                                             <a href="{{url('room/details/'.$item->id)}}">{{$item['type']['name']}}</a>
                                         </h3>
                                         <span>${{$item->price}} / Per Night </span>
                                         <div class="rating">
@@ -50,7 +50,7 @@
                                             <li><i class='bx bxs-hotel'></i> {{$item->bed_style}}</li>
                                         </ul>
                                         
-                                        <a href="room-details.html" class="book-more-btn">
+                                        <a href="{{url('room/details/'.$item->id)}}" class="book-more-btn">
                                             Book Now
                                         </a>
                                     </div>
