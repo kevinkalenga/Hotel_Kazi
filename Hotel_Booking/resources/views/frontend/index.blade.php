@@ -24,7 +24,7 @@
                                 <div class="form-group">
                                     <label>CHECK IN TIME</label>
                                     <div class="input-group">
-                                        <input id="datetimepicker" type="text" class="form-control" placeholder="11/02/2020">
+                                        <input autocomplete="off" name="check_in"  type="text" class="form-control dt_picker" placeholder="yyy-mm-dd" required>
                                         <span class="input-group-addon"></span>
                                     </div>
                                     <i class='bx bxs-chevron-down'></i>	
@@ -35,7 +35,7 @@
                                 <div class="form-group">
                                     <label>CHECK OUT TIME</label>
                                     <div class="input-group">
-                                        <input id="datetimepicker-check" type="text" class="form-control" placeholder="11/02/2020">
+                                        <input autocomplete="off" name="check_out"  type="text" class="form-control dt_picker" placeholder="yyy-mm-dd" required>
                                         <span class="input-group-addon"></span>
                                     </div>
                                     <i class='bx bxs-chevron-down'></i>	
@@ -45,7 +45,7 @@
                             <div class="col-lg-2 col-md-2">
                                 <div class="form-group">
                                     <label>GUESTS</label>
-                                    <select class="form-control">
+                                    <select name="persion" class="form-control">
                                         <option>01</option>
                                         <option>02</option>
                                         <option>03</option>
@@ -56,7 +56,7 @@
 
                             <div class="col-lg-4 col-md-4">
                                 <button type="submit" class="default-btn btn-bg-one border-radius-5">
-                                    Check Arability
+                                    Check Availability
                                 </button>
                             </div>
                         </div>
