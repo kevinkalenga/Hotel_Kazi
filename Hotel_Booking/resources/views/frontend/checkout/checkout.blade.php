@@ -109,7 +109,7 @@
 											<input type="text" class="form-control">
 										</div>
 									</div>
-									<p>Session Value : {{ json_encode(session('book_date')) }}</p>
+									{{--<p>Session Value : {{ json_encode(session('book_date')) }}</p>--}}
 
 									<div class="col-lg-12 col-md-12">
 										<div class="form-check">
@@ -143,26 +143,30 @@
                                             <br>
               
                                             <table class="table" style="width: 100%">
+												   @php
+                                                     $subtotal = $room->price * $nights * $book_data['number_of_rooms']; 
+                                                     $discount =($room->discount/100)*$subtotal;  
+                                                  @endphp
                                                    
                                                   <tr>
-                                                        <td><p>Total Night ( 4)</p></td>
-                                                        <td style="text-align: right"><p>Room Name</p></td>
+                                                        <td><p>Total Night<br> <b> ( {{ $book_data['check_in'] }} - {{ $book_data['check_out'] }})</b></p></td>
+                                                         <td style="text-align: right"><p> {{ $nights }} Days</p></td>
                                                   </tr>
                                                   <tr>
                                                         <td><p>Total Room</p></td>
-                                                        <td style="text-align: right"><p>3</p></td>
+                                                        <td style="text-align: right"><p>{{ $book_data['number_of_rooms'] }}</p></td>
                                                   </tr>
                                                   <tr>
                                                         <td><p>Subtotal</p></td>
-                                                        <td style="text-align: right"><p>200</p></td>
+                                                        <td style="text-align: right"><p>${{ $subtotal }}</p></td>
                                                   </tr>
                                                   <tr>
                                                         <td><p>Discount</p></td>
-                                                        <td style="text-align:right"> <p>Discount</p></td>
+                                                        <td style="text-align:right"> <p>${{ $discount }}</p></td>
                                                   </tr>
                                                   <tr>
                                                         <td><p>Total</p></td>
-                                                        <td style="text-align:right"> <p>Total</p></td>
+                                                        <td style="text-align:right"> <p>${{ $subtotal-$discount }}</p></td>
                                                   </tr>
                                             </table>
               
