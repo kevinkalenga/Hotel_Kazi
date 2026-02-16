@@ -349,5 +349,5 @@
 
     })
 
-
+ </script>
 @endsection
