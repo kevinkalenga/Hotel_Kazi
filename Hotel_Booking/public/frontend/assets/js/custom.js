@@ -251,8 +251,10 @@
     
     $('.dt_picker').datepicker({
         dateFormat: 'yy-mm-dd',
+        minDate: 0, 
+        
         autoclose: true,
-        minDate: 0
+      
     });
 
 

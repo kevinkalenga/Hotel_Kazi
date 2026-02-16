@@ -73,6 +73,7 @@ class FrontendRoomController extends Controller
 
     public function SearchRoomDetails(Request $request, $id)
     {
+      // load the session in url
       $request->flash();
       // Charger la room avec son type (utilisé dans le blade)
       $roomDetails = Room::with('type')->findOrFail($id);

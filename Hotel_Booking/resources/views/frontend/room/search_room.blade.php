@@ -53,14 +53,14 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="room-card">
-                            <a href="{{ route('search_room_details', $item->id.'&check_in='.old('check_in').
+                            <a href="{{ route('search_room_details', $item->id.'?check_in='.old('check_in').
                                     '&check_out='.old('check_out').'&persion='.old('persion')) }}">
                                 <img style="width:550px; height:300px;"
                                      src="{{ asset($item->image) }}" alt="Images">
                             </a>
                             <div class="content">
                                 <h5>
-                                    <a href="{{ route('search_room_details', $item->id.'&check_in='.old('check_in').
+                                    <a href="{{ route('search_room_details', $item->id.'?check_in='.old('check_in').
                                     '&check_out='.old('check_out').'&persion='.old('persion')) }}">
                                         {{ $item['type']['name'] }}
                                     </a>
