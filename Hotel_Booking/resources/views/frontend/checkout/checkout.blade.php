@@ -24,7 +24,8 @@
         <!-- Checkout Area -->
 		<section class="checkout-area pt-100 pb-70">
 			<div class="container">
-				<form>
+				<form method="post" role="form" action="{{route('checkout.store')}}">
+					@csrf
 					<div class="row">
                         <div class="col-lg-8">
 							<div class="billing-details">
@@ -179,7 +180,7 @@
 							<div class="payment-box">
                                 <div class="payment-method">
                                      <p>
-                                        <input type="radio" id="cash-on-delivery" name="payment_method">
+                                        <input type="radio" id="cash-on-delivery" name="payment_method" value="COD">
                                         <label for="cash-on-delivery">Cash On Delivery</label>
                                     </p>
                                     <p>
@@ -189,9 +190,9 @@
                                    
                                 </div>
 
-                                <a href="#" class="order-btn three">
-                                    Place to Order
-                                </a>
+								<button type="submit" class="order-btn">Place To Order</button>
+
+                               
                             </div>
 						</div>
 					</div>
