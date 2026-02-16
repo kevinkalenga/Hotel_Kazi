@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\RoomTypeController;
 use App\Http\Controllers\Backend\RoomController;
 
 use App\Http\Controllers\Frontend\FrontendRoomController;
+use App\Http\Controllers\Frontend\BookingController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -110,6 +111,19 @@ Route::controller(FrontendRoomController::class)->group(function() {
         Route::get('/check_room_availability', 'CheckRoomAvailability')->name('check_room_availability'); 
      
        
+});
+
+// Auth middleware User must be logged in so as to access this route
+Route::middleware(['auth'])->group(function() {
+    // Checkout All routes
+    Route::controller(BookingController::class)->group(function() {
+       
+        Route::get('/checkout', 'Checkout')->name('checkout');
+    
+     
+       
+    });
+
 });
 
 
