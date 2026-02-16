@@ -34,7 +34,7 @@
                                             <div class="form-group">
                                                 <label>Check in</label>
                                                 <div class="input-group">
-                                                    <input autocomplete="off"  type="text" required name="check_id" id="check_id"  class="form-control dt_picker" value="{{ old('check_in') ? date('Y-m-d', strtotime(old('check_in'))) : '' }}" >
+                                                    <input autocomplete="off"  type="text" required name="check_in" id="check_in"  class="form-control dt_picker" value="{{ old('check_in') ? date('Y-m-d', strtotime(old('check_in'))) : '' }}" >
                                                     <span class="input-group-addon"></span>
                                                 </div>
                                                 <i class='bx bxs-calendar'></i>
@@ -64,17 +64,22 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <input type="hidden" id="total_adult" value="{{$roomDetails->total_adult}}">
+                                        <input type="hidden" id="room_price" value="{{ $roomDetails->price }}">
+                                        <input type="hidden" id="discount_p" value="{{ $roomDetails->discount }}">
 
                                         <!-- Number of Rooms -->
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Numbers of Rooms</label>
-                                                <select class="form-control" name="number_of_rooms" id="select_room">
+                                                <select class="form-control number_of_rooms" name="number_of_rooms" id="select_room">
                                                         @for ($i = 1; $i <= 5; $i++)  
                                                            <option value="0{{ $i }}">0{{ $i }}</option>
                                                         @endfor
                                                 </select>  
                                             </div>
+                                            <input type="hidden" name="available_room" id="available_room">
+                                            <p class="available_room"></p>
                                         </div>
 
                                         
@@ -84,17 +89,17 @@
                                                 <tbody>
                                                 <tr> 
                                                     <td><p> SubTotal</p></td>
-                                                    <td style="text-align: right" >34</td> 
+                                                    <td style="text-align: right" ><span class="t_subtotal">0</span></td> 
                                                 </tr>
 
                                                 <tr> 
                                                     <td><p> Discount</p></td>
-                                                    <td style="text-align: right" >34</td> 
+                                                    <td style="text-align: right" ><span class="t_discount">0</span></td> 
                                                 </tr>
 
                                                 <tr> 
                                                     <td><p> Total</p></td>
-                                                    <td style="text-align: right" >34</td> 
+                                                    <td style="text-align: right" ><span class="t_g_total">0</span></td> 
                                                 </tr>
                    
                                                 </tbody>
