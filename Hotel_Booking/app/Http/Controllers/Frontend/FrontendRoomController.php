@@ -96,4 +96,10 @@ class FrontendRoomController extends Controller
       ));
     }
 
+
+     public function CheckRoomAvailability(Request $request)
+     {
+     
+     }
+
 }
