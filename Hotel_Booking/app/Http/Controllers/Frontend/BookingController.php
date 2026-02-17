@@ -85,7 +85,7 @@ class BookingController extends Controller
 
     public function CheckoutStore(Request $request){
 
-        $this->validate($request,[
+        $request->validate([
             'name' => 'required',
             'email' => 'required',
             'country' => 'required',
@@ -125,7 +125,7 @@ class BookingController extends Controller
            $data->discount = $discount;
            $data->total_price = $total_price;
            $data->payment_method = $request->payment_method;
-           $data->transation_id = '';
+           $data->transaction_id = '';
            $data->payment_status = 0;
 
            $data->name = $request->name;
@@ -140,6 +140,32 @@ class BookingController extends Controller
            $data->status = 0;
            $data->created_at = Carbon::now();
            $data->save();
+
+           
+
+           // Insert data into the room_booked_date table  
+           $sdate = date('Y-m-d',strtotime($book_data['check_in']));
+           $edate = date('Y-m-d',strtotime($book_data['check_out']));
+           $eldate = Carbon::create($edate)->subDay();
+           $d_period = CarbonPeriod::create($sdate,$eldate);
+            foreach ($d_period as $period) {
+               $booked_dates = new RoomBookedDate();
+               $booked_dates->booking_id = $data->id;
+               $booked_dates->room_id = $room->id;
+               $booked_dates->book_date = date('Y-m-d', strtotime($period));
+               $booked_dates->save();
+            }
+            
+            // remove the data from the session after saving in db
+           Session::forget('book_date');
+
+
+            $notification = array(
+               'message' => 'Booking Added Successfully',
+               'alert-type' => 'success'
+            ); 
+           
+            return redirect('/')->with($notification); 
 
 
 

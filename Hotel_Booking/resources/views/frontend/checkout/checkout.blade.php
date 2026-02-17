@@ -95,7 +95,7 @@
 									<div class="col-lg-6 col-md-6">
 										<div class="form-group">
 											<label>State <span class="required">*</span></label>
-											<input type="text" name="status" class="form-control">
+											<input type="text" name="state" class="form-control">
 											@if($errors->has('state')) 
                                              <div class="text-danger">{{$errors->first('state')}}</div>
 											@endif
