@@ -15,6 +15,8 @@ use App\Models\Facility;
 use App\Models\RoomBookedDate;
 use App\Models\Booking;
 use Auth;
+use Stripe\Stripe;
+use Stripe\Charge;
 
 class BookingController extends Controller
 {
@@ -109,7 +111,56 @@ class BookingController extends Controller
            $total_price = $subtotal-$discount;
            $code = rand(000000000,999999999);
 
+          // On vérifie si le moyen de paiement choisi est Stripe 
 
+            if ($request->payment_method === 'Stripe') {
+
+                try {
+                    //  Définition de la clé SECRÈTE Stripe (obligatoire côté backend)
+
+                     Stripe::setApiKey(config('services.stripe.secret'));
+
+                        // Création du paiement Stripe
+                        // Stripe attend le montant en CENTIMES (ex: 10$ = 1000)
+
+                    $s_pay = Charge::create([
+                        'amount' => intval($total_price * 100), // toujours en centimes
+                        'currency' => 'usd',
+                        'source' => $request->stripeToken, // token généré côté frontend
+                        'description' => 'Payment For Booking. Booking No ' . $code,
+                    ]);
+                     
+                      // Vérification si le paiement a réussi
+                    if ($s_pay->status === 'succeeded') {
+                         // 1 = paiement effectué avec succès
+                        $payment_status = 1;
+                          // ID unique de la transaction Stripe (à stocker en base)
+                        $transaction_id = $s_pay->id;
+                    }
+
+                } catch (\Exception $e) {
+                    // En cas d'erreur Stripe (carte refusée, token invalide, etc.)
+                    $notification = [
+                        'message' => $e->getMessage(),
+                        'alert-type' => 'error'
+                    ];
+
+                    return redirect('/')->with($notification);
+                }
+
+            } else {
+                 //Cas paiement Cash On Delivery (pas de Stripe)
+                $payment_status = 0;
+                $transaction_id = null;
+            }
+
+            
+           
+           
+           
+           
+           
+           
            //   Insert the data into the booking table 
            $data = new Booking();
            $data->rooms_id = $room->id;

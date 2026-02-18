@@ -27,61 +27,106 @@
               action="{{ route('checkout.store') }}"
               class="stripe_form require-validation"
               data-cc-on-file="false"
-              data-stripe-publishable-key="{{ env('STRIPE_KEY') }}">
+              data-stripe-publishable-key="{{ config('services.stripe.key') }}">
             @csrf
 
             <div class="row">
 
                 <!-- LEFT : BILLING DETAILS -->
                 <div class="col-lg-8">
-                    <div class="billing-details">
-                        <h3 class="title">Billing Details</h3>
+                  
 
-                        <div class="row">
+                       <div class="billing-details">
+								<h3 class="title">Billing Details</h3>
 
-                            <div class="col-lg-12 col-md-12">
-                                <div class="form-group">
-                                    <label>Country <span class="required">*</span></label>
-                                    <div class="select-box">
-                                        <select name="country" class="form-control">
-                                            <option value="Congo">Congo</option>
-                                            <option value="India">India</option>
-                                            <option value="France">France</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="form-group">
+											<label>Country <span class="required">*</span></label>
+											<div class="select-box">
+												<select name="country" class="form-control">
+													<option value="Congo">Congo</option>
+													<option value="India">India</option>
+													<option value="Sweeden">Sweeden</option>
+													<option value="Italy">Italy</option>
+													<option value="Egypt">Egypt</option>
+													<option value="China">China</option>
+													<option value="United Kingdom">United Kingdom</option>
+													<option value="Germany">Germany</option>
+													<option value="France">France</option>
+													<option value="Japan">Japan</option>
+												</select>
+											</div>
+										</div>
+									</div>
 
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input type="text" name="name" class="form-control" value="{{ Auth::user()->name }}">
-                                </div>
-                            </div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Name <span class="required">*</span></label>
+											<input type="text" name="name" class="form-control" value="{{Auth::user()->name}}">
+											@if($errors->has('name')) 
+                                             <div class="text-danger">{{$errors->first('name')}}</div>
+											@endif
+										</div>
+									</div>
 
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>Email *</label>
-                                    <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}">
-                                </div>
-                            </div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Email <span class="required">*</span></label>
+											<input type="email" name="email" class="form-control" value="{{Auth::user()->email}}">
+											@if($errors->has('email')) 
+                                             <div class="text-danger">{{$errors->first('email')}}</div>
+											@endif
+										</div>
+									</div>
 
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="text" name="phone" class="form-control" value="{{ Auth::user()->phone }}">
-                                </div>
-                            </div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Phone</label>
+											<input type="text" name="phone" class="form-control" value="{{Auth::user()->phone}}">
+											@if($errors->has('phone')) 
+                                             <div class="text-danger">{{$errors->first('phone')}}</div>
+											@endif
+										</div>
+									</div>
 
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>Address *</label>
-                                    <input type="text" name="address" class="form-control" value="{{ Auth::user()->address }}">
-                                </div>
-                            </div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Address <span class="required">*</span></label>
+											<input type="text" name="address" class="form-control" value="{{Auth::user()->address}}">
+											@if($errors->has('address')) 
+                                             <div class="text-danger">{{$errors->first('address')}}</div>
+											@endif
+										</div>
+									</div>
 
-                        </div>
-                    </div>
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>State <span class="required">*</span></label>
+											<input type="text" name="state" class="form-control">
+											@if($errors->has('state')) 
+                                             <div class="text-danger">{{$errors->first('state')}}</div>
+											@endif
+										</div>
+									</div>
+
+									<div class="col-lg-6 col-md-6">
+										<div class="form-group">
+											<label>Zip Code <span class="required">*</span></label>
+											<input type="text" name="zip_code" class="form-control">
+											@if($errors->has('zip_code')) 
+                                             <div class="text-danger">{{$errors->first('zip_code')}}</div>
+											@endif
+										</div>
+									</div>
+
+									
+									{{--<p>Session Value : {{ json_encode(session('book_date')) }}</p>--}}
+
+									
+								</div>
+							</div>
+                
                 </div>
 
                 <!-- RIGHT : BOOKING SUMMARY -->
@@ -184,98 +229,101 @@
     </div>
 </section>
 
-<script src="https://js.stripe.com/v2/"></script>
+
+
+
+
+
+<script src="https://js.stripe.com/v2/"></script> 
 
 <script>
-   $(document).ready(function () {
-      $('.pay_method').on('click', function () {
+/**
+ * On garde la référence du formulaire accessible partout
+ */
+var $form = $('.require-validation');
+
+$(document).ready(function () {
+
+    /**
+     * Afficher le formulaire Stripe quand on choisit Stripe
+     */
+    $('.pay_method').on('click', function () {
         $('#stripe_pay').removeClass('d-none');
-      });
     });
 
+    /**
+     * Intercepter la soumission du formulaire
+     */
+    $form.on('submit', function (e) {
 
-      $(function() {
-            var $form = $(".require-validation");
-            $('form.require-validation').bind('submit', function(e) {
+        // Vérifier si un moyen de paiement est sélectionné
+        var pay_method = $('input[name="payment_method"]:checked').val();
 
-                  var pay_method = $('input[name="payment_method"]:checked').val();
-                  if (pay_method == undefined){
-                        alert('Please select a payment method');
-                        return false;
-                  }else if(pay_method == 'COD'){
+        if (!pay_method) {
+            alert('Please select a payment method');
+            e.preventDefault();
+            return false;
+        }
 
-                  }else{
-                        document.getElementById('myButton').disabled = true;
+        // Cash On Delivery → on laisse Laravel gérer
+        if (pay_method === 'COD') {
+            return true;
+        }
 
-                        var $form         = $(".require-validation"),
-                                inputSelector = ['input[type=email]', 'input[type=password]',
-                                      'input[type=text]', 'input[type=file]',
-                                      'textarea'].join(', '),
-                                $inputs       = $form.find('.required').find(inputSelector),
-                                $errorMessage = $form.find('div.error'),
-                                valid         = true;
-                        $errorMessage.addClass('hide');
+        /**
+         * Stripe sélectionné
+         */
+        e.preventDefault(); // on bloque l'envoi classique
+        $('#myButton').prop('disabled', true);
 
-                        $('.has-error').removeClass('has-error');
-                        $inputs.each(function(i, el) {
-                              var $input = $(el);
-                              if ($input.val() === '') {
-                                    $input.parent().addClass('has-error');
-                                    $errorMessage.removeClass('hide');
-                                    e.preventDefault();
-                              }
-                        });
+        // Initialisation de Stripe avec la clé publique
+        Stripe.setPublishableKey($form.data('stripe-publishable-key'));
 
-                        if (!$form.data('cc-on-file')) {
+        // Création du token Stripe
+        Stripe.createToken({
+            number: $('.card-number').val(),
+            cvc: $('.card-cvc').val(),
+            exp_month: $('.card-expiry-month').val(),
+            exp_year: $('.card-expiry-year').val()
+        }, stripeResponseHandler);
+    });
+});
 
-                              e.preventDefault();
-                              Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                              Stripe.createToken({
-                                    number: $('.card-number').val(),
-                                    cvc: $('.card-cvc').val(),
-                                    exp_month: $('.card-expiry-month').val(),
-                                    exp_year: $('.card-expiry-year').val()
-                              }, stripeResponseHandler);
-                        }
-                  }
+/**
+ * Callback Stripe
+ */
+function stripeResponseHandler(status, response) {
 
+    if (response.error) {
 
+        // Erreur Stripe (carte refusée, infos invalides, etc.)
+        $('#myButton').prop('disabled', false);
+        alert(response.error.message);
 
-            });
+    } else {
 
+        // Token Stripe généré avec succès
+        var token = response.id;
 
+        // On ajoute le token au formulaire
+        $('<input>')
+            .attr({
+                type: 'hidden',
+                name: 'stripeToken',
+                value: token
+            })
+            .appendTo($form);
 
-            function stripeResponseHandler(status, response) {
-                  if (response.error) {
-
-                        document.getElementById('myButton').disabled = false;
-
-                        $('.error')
-                                .removeClass('hide')
-                                .find('.alert')
-                                .text(response.error.message);
-                  } else {
-
-                        document.getElementById('myButton').disabled = true;
-                        document.getElementById('myButton').value = 'Please Wait...';
-
-                        // token contains id, last4, and card type
-                        var token = response['id'];
-                        // insert the token into the form so it gets submitted to the server
-                        $form.find('input[type=text]').empty();
-                        $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-                        $form.get(0).submit();
-                  }
-            }
-
-      });
-
-
+        // On soumet le formulaire vers Laravel
+        $form.get(0).submit();
+    }
+}
 
 
 
 
 
 </script>
+
 
 @endsection
