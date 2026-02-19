@@ -154,14 +154,7 @@ class BookingController extends Controller
                 $transaction_id = null;
             }
 
-            
-           
-           
-           
-           
-           
-           
-           //   Insert the data into the booking table 
+            //   Insert the data into the booking table 
            $data = new Booking();
            $data->rooms_id = $room->id;
            $data->user_id = Auth::user()->id;
@@ -221,5 +214,11 @@ class BookingController extends Controller
 
 
 
+    }
+
+    public function BookingList()
+    {
+        $allData = Booking::orderBy('id', 'desc')->get();
+        return view('backend.booking.booking_list', compact('allData'));
     }
 }
