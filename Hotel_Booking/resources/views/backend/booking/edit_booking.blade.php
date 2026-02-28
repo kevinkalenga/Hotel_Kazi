@@ -85,7 +85,7 @@
                        <p class="mb-0 text-secondary">Booking Status</p>
                        <h6 class="my-1 text-warning">
                         @if ($editData->status == '1')
-                        <span class="text-success">Active</span>
+                        <span class="text-success">Complete</span>
                         @else
                         <span class="text-danger">Pending</span>
                          @endif </h6>
@@ -152,8 +152,8 @@
                    </div>
                 </div>
                
-                <form action="">
-
+                <form action="{{route('update.booking.status', $editData->id)}}" method="POST">
+                     @csrf
                     <div class="row" style="margin-top: 40px;">
                         <div class="col-md-5">
                            <label for="">Payment Status</label>
