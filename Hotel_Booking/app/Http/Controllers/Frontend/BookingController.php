@@ -17,6 +17,8 @@ use App\Models\Booking;
 use Auth;
 use Stripe\Stripe;
 use Stripe\Charge;
+use App\Models\BookingRoomList;
+use App\Models\RoomNumber;
 
 class BookingController extends Controller
 {
@@ -286,7 +288,37 @@ class BookingController extends Controller
         return redirect()->back()->with($notification); 
     }
 
-    public function AssignRoom(){
+    public function AssignRoom($booking_id){
+         // Récupère la réservation correspondant à l’ID fourni
+        $booking = Booking::find($booking_id);
+        
+         // Récupère toutes les dates réservées pour cette réservation
+        // et les stocke dans un tableau
+        $booking_date_array = RoomBookedDate::where('booking_id',$booking_id)->pluck('book_date')->toArray();
+        
+        // Recherche toutes les réservations qui :
+        // - ont une date identique à celles de la réservation actuelle
+        // - concernent le même type de chambre
+        // Puis récupère les IDs de réservation distincts
+        $check_date_booking_ids = RoomBookedDate::whereIn('book_date',$booking_date_array)->where('room_id',$booking->rooms_id)->distinct()->pluck('booking_id')->toArray();
+        
+        // Récupère les IDs des réservations trouvées
+        $booking_ids = Booking::whereIn('id',$check_date_booking_ids)->pluck('id')->toArray();
+        
+         // Récupère les IDs des numéros de chambre déjà assignés
+         // à ces réservations
+        $assign_room_ids = BookingRoomList::whereIn('booking_id',$booking_ids)->pluck('room_number_id')->toArray();
+        
 
-    } 
+        // Récupère les chambres :
+        // - du même type que la réservation
+        // - non encore assignées
+        // - avec un statut "Active"
+        $room_numbers = RoomNumber::where('rooms_id',$booking->rooms_id)->whereNotIn('id',$assign_room_ids)->where('status','Active')->get();
+        // Retourne la vue avec les données de la réservation
+        // et la liste des chambres disponibles
+        return view('backend.booking.assign_room',compact('booking','room_numbers'));
+        
+
+    }
 }
