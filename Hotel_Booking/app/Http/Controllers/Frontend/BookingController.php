@@ -242,4 +242,47 @@ class BookingController extends Controller
            
         return redirect()->back()->with($notification); 
     }
+    public function UpdateBooking(Request $request, $id)
+    {
+        // quand le nbr max de rooms dispo seras inferieur au nbr de rooms selectionné
+         if($request->available_room < $request->number_of_rooms) {
+             $notification = array(
+            'message' => 'Something Went Wrong',
+            'alert-type' => 'error'
+           ); 
+           
+             return redirect()->back()->with($notification); 
+         }
+
+         $data = Booking::find($id);
+         $data->number_of_rooms = $request->number_of_rooms;
+         $data->check_in = date('Y-m-d', strtotime($request->check_in));
+         $data->check_out = date('Y-m-d', strtotime($request->check_out));
+        //  Mise à jour de l update de booking
+         $data->save();
+        
+        // Suppression de l'ancien booking et remplacé les donnés inserés en dessous
+         RoomBookedDate::where('booking_id', $id)->delete();
+
+         // Insert data into the room_booked_date table  
+           $sdate = date('Y-m-d',strtotime($request->check_in));
+           $edate = date('Y-m-d',strtotime($request->check_out));
+           $eldate = Carbon::create($edate)->subDay();
+           $d_period = CarbonPeriod::create($sdate,$eldate);
+            foreach ($d_period as $period) {
+               $booked_dates = new RoomBookedDate();
+               $booked_dates->booking_id = $data->id;
+               $booked_dates->room_id = $data->rooms_id;
+               $booked_dates->book_date = date('Y-m-d', strtotime($period));
+               $booked_dates->save();
+            }
+
+
+            $notification = array(
+            'message' => 'Booking Updated Successfully',
+            'alert-type' => 'success'
+          ); 
+           
+        return redirect()->back()->with($notification); 
+    }
 }
