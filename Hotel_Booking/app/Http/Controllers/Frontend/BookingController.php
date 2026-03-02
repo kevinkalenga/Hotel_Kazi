@@ -263,6 +263,9 @@ class BookingController extends Controller
         //  Mise à jour de l update de booking
          $data->save();
         
+        //  Suppression de l'ancien assign bookingRoomList
+        BookingRoomList::where('booking_id', $id)->delete();
+        
         // Suppression de l'ancien booking et remplacé les donnés inserés en dessous
          RoomBookedDate::where('booking_id', $id)->delete();
 
@@ -329,7 +332,25 @@ class BookingController extends Controller
         $check_data = BookingRoomList::where('booking_id',$booking_id)->count();
 
         if ($check_data < $booking->number_of_rooms) {
-            # code...
+           $assign_data = new BookingRoomList();
+           $assign_data->booking_id = $booking_id;
+           $assign_data->room_id = $booking->rooms_id;
+           $assign_data->room_number_id = $room_number_id;
+           $assign_data->save();
+
+           $notification = array(
+            'message' => 'Room Assign Successfully',
+            'alert-type' => 'success'
+          ); 
+            return redirect()->back()->with($notification);  
+        } else {
+
+            $notification = array(
+                'message' => 'Room Already Assign',
+                'alert-type' => 'error'
+            ); 
+            return redirect()->back()->with($notification);   
+
         }
 
      }
