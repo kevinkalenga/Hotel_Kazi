@@ -16,6 +16,7 @@ use Auth;
 use Stripe\Charge;
 use App\Models\BookingRoomList;
 use App\Models\RoomNumber;
+use App\Models\RoomType;
 
 class RoomListController extends Controller
 {
@@ -30,5 +31,13 @@ class RoomListController extends Controller
           ->get();
 
         return view('backend.allroom.roomlist.view_roomlist', compact('room_number_list'));
+    }
+
+
+    public function AddRoomList(){
+
+        $roomtype = RoomType::all();
+        return view('backend.allroom.roomlist.add_roomlist',compact('roomtype'));
+
     }
 }
