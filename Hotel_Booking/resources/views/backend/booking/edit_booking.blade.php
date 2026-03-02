@@ -176,6 +176,12 @@
                            @endforeach
 
                        </table>
+                    
+                    @else
+                        <div class="alert alert-danger text-center">
+                            Assigned Room Not Found
+                        </div>
+                
                     @endif
                 
                 
