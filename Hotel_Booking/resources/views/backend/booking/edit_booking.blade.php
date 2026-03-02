@@ -170,7 +170,7 @@
                            <tr>
                                <td>{{ $assign_room->room_number->room_no }}</td>
                                <td>
-                                   <a href="">Delete</a>
+                                   <a href="{{ route('assign_room_delete',$assign_room->id) }}" class="delete-button">Delete</a>
                                </td>
                            </tr>
                            @endforeach

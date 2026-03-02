@@ -136,9 +136,11 @@ Route::middleware(['auth'])->group(function() {
         // booking Update
         Route::post('/update/booking/status/{id}', 'UpdateBookingStatus')->name('update.booking.status');
         Route::post('/update/booking/{id}', 'UpdateBooking')->name('update.booking');
-        Route::get('/assign_room/{id}', 'AssignRoom')->name('assign_room');
+        
         // Assign Room Route
+        Route::get('/assign_room/{id}', 'AssignRoom')->name('assign_room');
         Route::get('/assign_room/store/{booking_id}/{room_number_id}', 'AssignRoomStore')->name('assign_room_store');
+        Route::get('/assign_room_delete/{id}', 'AssignRoomDelete')->name('assign_room_delete');
      
        
     });
