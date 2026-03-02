@@ -155,6 +155,28 @@
                    <div style="margin-top: 40px; margin-bottom:20px;">
                      <a class="btn btn-primary assign_room" href="javascript::void(0)">Assign Room</a>
                    </div>
+
+                    @php
+                      $assign_rooms = App\Models\BookingRoomList::with('room_number')->where('booking_id',$editData->id)->get();
+                    @endphp 
+
+                    @if (count($assign_rooms) > 0) 
+                       <table class="table table-bordered">
+                           <tr>
+                               <th>Room Number</th>
+                               <th>Action</th>
+                           </tr>
+                           @foreach ($assign_rooms as $assign_room)  
+                           <tr>
+                               <td>{{ $assign_room->room_number->room_no }}</td>
+                               <td>
+                                   <a href="">Delete</a>
+                               </td>
+                           </tr>
+                           @endforeach
+
+                       </table>
+                    @endif
                 
                 
                 </div>
@@ -292,7 +314,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                     </div>
+                </div>
                 
             </div>
         </div>
