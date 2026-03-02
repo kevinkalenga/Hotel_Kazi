@@ -308,7 +308,7 @@
       getAvaility()
    
        
-        |$(".assign_room").on('click', function(){
+        $(".assign_room").on('click', function(){
             $.ajax({
                 url: "{{ route('assign_room',$editData->id) }}",
                 success: function(data){

@@ -43,7 +43,7 @@ class FrontendRoomController extends Controller
 
     public function BookingSearch(Request $request)
     {
-      // flash is used to store data into the session for a single request
+        // flash is used to store data into the session for a single request
         $request->flash();
         if($request->check_in == $request->check_out) {
           $notification = array(
@@ -102,8 +102,8 @@ class FrontendRoomController extends Controller
     }
 
 
-     public function CheckRoomAvailability(Request $request)
-     {
+    public function CheckRoomAvailability(Request $request)
+    {
        
         $sdate = date('Y-m-d',strtotime($request->check_in));
         $edate = date('Y-m-d',strtotime($request->check_out));
@@ -134,6 +134,6 @@ class FrontendRoomController extends Controller
      
      
      
-     }
+    }
 
 }
