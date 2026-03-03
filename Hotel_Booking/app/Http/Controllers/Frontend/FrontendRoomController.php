@@ -102,38 +102,75 @@ class FrontendRoomController extends Controller
     }
 
 
-    public function CheckRoomAvailability(Request $request)
-    {
+    // public function CheckRoomAvailability(Request $request)
+    // {
        
-        $sdate = date('Y-m-d',strtotime($request->check_in));
-        $edate = date('Y-m-d',strtotime($request->check_out));
-        $alldate = Carbon::create($edate)->subDay();
-        $d_period = CarbonPeriod::create($sdate,$alldate);
-        $dt_array = [];
-        foreach ($d_period as $period) {
-           array_push($dt_array, date('Y-m-d', strtotime($period)));
-        }
+    //     $sdate = date('Y-m-d',strtotime($request->check_in));
+    //     $edate = date('Y-m-d',strtotime($request->check_out));
+    //     $alldate = Carbon::create($edate)->subDay();
+    //     $d_period = CarbonPeriod::create($sdate,$alldate);
+    //     $dt_array = [];
+    //     foreach ($d_period as $period) {
+    //        array_push($dt_array, date('Y-m-d', strtotime($period)));
+    //     }
         
-        // room booked date
-        $check_date_booking_ids = RoomBookedDate::whereIn('book_date',$dt_array)->distinct()->pluck('booking_id')->toArray();
+    //     // room booked date
+    //     $check_date_booking_ids = RoomBookedDate::whereIn('book_date',$dt_array)->distinct()->pluck('booking_id')->toArray();
 
-        $room = Room::withCount('roomNumbers')->find($request->room_id);
+    //     $room = Room::withCount('roomNumbers')->find($request->room_id);
 
-        $bookings = Booking::withCount('assign_rooms')->whereIn('id',$check_date_booking_ids)->where('rooms_id',$room->id)->get()->toArray();
+    //     $bookings = Booking::withCount('assign_rooms')->whereIn('id',$check_date_booking_ids)->where('rooms_id',$room->id)->get()->toArray();
 
-        $total_book_room = array_sum(array_column($bookings,'assign_rooms_count'));
+    //     $total_book_room = array_sum(array_column($bookings,'assign_rooms_count'));
 
-        // @ use so as not to display any error if room number is not define
-        $av_room = @$room->room_numbers_count-$total_book_room;
+    //     // @ use so as not to display any error if room number is not define
+    //     $av_room = @$room->room_numbers_count-$total_book_room;
 
-        $toDate = Carbon::parse($request->check_in);
-        $fromDate = Carbon::parse($request->check_out);
-        $nights = $toDate->diffInDays($fromDate);
+    //     $toDate = Carbon::parse($request->check_in);
+    //     $fromDate = Carbon::parse($request->check_out);
+    //     $nights = $toDate->diffInDays($fromDate);
 
-        return response()->json(['available_room'=>$av_room, 'total_nights'=>$nights ]);
+    //     return response()->json(['available_room'=>$av_room, 'total_nights'=>$nights ]);
      
      
      
+    // }
+
+  public function CheckRoomAvailability(Request $request)
+  {
+    $roomtype_id = $request->roomtype_id;
+
+    $sdate = Carbon::parse($request->check_in);
+    $edate = Carbon::parse($request->check_out)->subDay();
+    $d_period = CarbonPeriod::create($sdate, $edate);
+
+    $dates = [];
+    foreach ($d_period as $period) {
+        $dates[] = $period->format('Y-m-d');
     }
+
+    // Toutes les rooms de ce type
+    $rooms = Room::where('roomtype_id', $roomtype_id)->pluck('id');
+
+    // Total chambres physiques
+    $total_rooms = \App\Models\RoomNumber::whereIn('rooms_id', $rooms)->count();
+
+    // Bookings sur ces dates
+    $booking_ids = RoomBookedDate::whereIn('book_date', $dates)
+        ->pluck('booking_id')
+        ->toArray();
+
+    $booked_rooms = Booking::whereIn('id', $booking_ids)
+        ->whereIn('rooms_id', $rooms)
+        ->withCount('assign_rooms')
+        ->get()
+        ->sum('assign_rooms_count');
+
+    $available_room = max($total_rooms - $booked_rooms, 0);
+
+    return response()->json([
+        'available_room' => $available_room
+    ]);
+  }
 
 }

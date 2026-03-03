@@ -27,11 +27,12 @@
                         <div class="card-body p-4">
                             <form class="row g-3">
                                 <div class="col-md-4">
-                                    <label for="input1" class="form-label">Room Type</label>
-                                    <select name="room_id" id="input7" class="form-select">
+                                    <label for="roomtype_id" class="form-label">Room Type</label>
+                                    <select name="room_id" id="room_id" class="form-select">
                                         <option selected="">Select Room Type </option>
                                         @foreach ($roomtype as $item) 
-                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                             <option value="{{ $item->id }}" {{ collect(old('roomtype_id'))->contains($item->id) ? 'selected' : '' }}>{{ $item->name }}</option>
+                                             
                                         @endforeach
                                     </select>
                                 </div>
@@ -50,7 +51,7 @@
                                     <label for="input3" class="form-label">Room</label>
                                     <input type="number" name="number_of_rooms" class="form-control" >
 
-                                    <input type="hidden" name="available_room" class="form-control" >
+                                    <input type="hidden" name="available_room" id="available_room" class="form-control" >
                                     <div class="mt-2">
                                         <label for="">Availability <span class="text-success availability"></span> </label>
                                     </div>
@@ -113,34 +114,67 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        $(document).ready(function (){
-            $('#myForm').validate({
-                rules: {
-                    name: { required : true }, 
-                    postion: { required : true }, 
-                    facebook: { required : true }, 
-                    image: { required : true },
-                },
-                messages :{
-                    name: { required : 'Please Enter Team Name' }, 
-                    postion: { required : 'Please Enter Team Postion' }, 
-                    facebook: { required : 'Please Enter Facebook Url' },
-                    image: { required : 'Please Select Image' }, 
-                },
-                errorElement : 'span', 
-                errorPlacement: function (error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight : function(element, errorClass, validClass){
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight : function(element, errorClass, validClass){
-                    $(element).removeClass('is-invalid');
-                },
-            });
-        });
-    </script>
+<script>
+$(document).ready(function () {
+
+    function resetAvailability() {
+        $(".availability").text(0);
+        $("#available_room").val(0);
+    }
+
+    // Reset quand on change le type de chambre
+    $("#room_id").on('change', function () {
+        resetAvailability();
+    });
+
+    // Lancer le calcul quand une date change
+    $("#check_in, #check_out").on('change', function () {
+        getAvailability();
+    });
+
+});
+
+function getAvailability() {
+
+    var roomtype_id = $("#room_id").val();
+    var check_in = $("#check_in").val();
+    var check_out = $("#check_out").val();
+
+    console.log('roomtype_id:', roomtype_id);
+    console.log('check_in:', check_in);
+    console.log('check_out:', check_out);
+
+    if (!roomtype_id || !check_in || !check_out) {
+        return; // on attend que tout soit rempli
+    }
+
+    var startDate = new Date(check_in);
+    var endDate = new Date(check_out);
+
+    if (startDate > endDate) {
+        alert('Check-out must be after Check-in');
+        $("#check_out").val('');
+        resetAvailability();
+        return;
+    }
+
+    $.ajax({
+        url: "{{ route('check_room_availability') }}",
+        data: {
+            roomtype_id: roomtype_id,
+            check_in: check_in,
+            check_out: check_out
+        },
+        success: function (data) {
+            console.log('response:', data);
+            $(".availability").text(data.available_room);
+            $("#available_room").val(data.available_room);
+        },
+        error: function (xhr) {
+            console.error('AJAX error:', xhr.responseText);
+        }
+    });
+}
+</script>
 </div>
 @endsection
