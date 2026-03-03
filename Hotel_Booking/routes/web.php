@@ -104,6 +104,7 @@ Route::middleware(['auth',  'adminRole:admin'])->group(function() {
        
         Route::get('/booking/list', 'BookingList')->name('booking.list');
         Route::get('/edit_booking/{id}', 'EditBooking')->name('edit.booking');
+        Route::get('/download/invoice/{id}', 'DownloadInvoice')->name('download.invoice');
       
       
     });
