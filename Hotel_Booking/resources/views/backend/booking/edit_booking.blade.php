@@ -127,7 +127,7 @@
                             <td>${{$editData->actual_price}}</td>
                             <td><span class="badge bg-primary">{{$editData->check_in }}</span> /<br> <span class="badge bg-warning text-dark">{{$editData->check_out}}</span></td>
                             <td>{{$editData->total_night}}</td>
-                            <td>${{$editData->actual_price * $editData->number_of_rooms}}</td>
+                            <td>${{ $editData->actual_price * $editData->number_of_rooms * $editData->total_night }}</td>
                         </tr>
                      </tbody>
                    </table>
