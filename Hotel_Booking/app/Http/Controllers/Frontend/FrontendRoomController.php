@@ -140,14 +140,15 @@ class FrontendRoomController extends Controller
   {
     $roomtype_id = $request->roomtype_id;
 
-    $sdate = Carbon::parse($request->check_in);
-    $edate = Carbon::parse($request->check_out)->subDay();
-    $d_period = CarbonPeriod::create($sdate, $edate);
+    $startDate = Carbon::parse($request->check_in);
+    $endDate   = Carbon::parse($request->check_out)->subDay();
 
-    $dates = [];
-    foreach ($d_period as $period) {
-        $dates[] = $period->format('Y-m-d');
+    if ($startDate->gte($endDate)) {
+        return response()->json(['available_room' => 0]);
     }
+
+    $period = CarbonPeriod::create($startDate, $endDate);
+    $dates = collect($period)->map(fn($date) => $date->format('Y-m-d'));
 
     // Toutes les rooms de ce type
     $rooms = Room::where('roomtype_id', $roomtype_id)->pluck('id');
@@ -155,18 +156,22 @@ class FrontendRoomController extends Controller
     // Total chambres physiques
     $total_rooms = \App\Models\RoomNumber::whereIn('rooms_id', $rooms)->count();
 
-    // Bookings sur ces dates
-    $booking_ids = RoomBookedDate::whereIn('book_date', $dates)
-        ->pluck('booking_id')
-        ->toArray();
+    $maxBooked = 0;
 
-    $booked_rooms = Booking::whereIn('id', $booking_ids)
-        ->whereIn('rooms_id', $rooms)
-        ->withCount('assign_rooms')
-        ->get()
-        ->sum('assign_rooms_count');
+    foreach ($dates as $date) {
+        $bookingIds = RoomBookedDate::where('book_date', $date)
+            ->pluck('booking_id');
 
-    $available_room = max($total_rooms - $booked_rooms, 0);
+        $bookedCount = Booking::whereIn('id', $bookingIds)
+            ->whereIn('rooms_id', $rooms)
+            ->withCount('assign_rooms')
+            ->get()
+            ->sum('assign_rooms_count');
+
+        $maxBooked = max($maxBooked, $bookedCount);
+    }
+
+    $available_room = max($total_rooms - $maxBooked, 0);
 
     return response()->json([
         'available_room' => $available_room

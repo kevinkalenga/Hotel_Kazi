@@ -25,10 +25,20 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body p-4">
-                            <form class="row g-3">
+                            <form method="POST" action="{{ route('store.roomlist') }}" class="row g-3">
+                                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+                                @csrf
                                 <div class="col-md-4">
                                     <label for="roomtype_id" class="form-label">Room Type</label>
-                                    <select name="room_id" id="room_id" class="form-select">
+                                    <select name="roomtype_id" id="roomtype_id" class="form-select">
                                         <option selected="">Select Room Type </option>
                                         @foreach ($roomtype as $item) 
                                              <option value="{{ $item->id }}" {{ collect(old('roomtype_id'))->contains($item->id) ? 'selected' : '' }}>{{ $item->name }}</option>
@@ -44,12 +54,12 @@
 
                                 <div class="col-md-4">
                                     <label for="input2" class="form-label">CheckOut</label>
-                                    <input type="date" name="checkout_out" class="form-control" id="check_out" placeholder="Last Name">
+                                    <input type="date" name="check_out" class="form-control" id="check_out" placeholder="Last Name">
 
                                 </div>
                                 <div class="col-md-4">
                                     <label for="input3" class="form-label">Room</label>
-                                    <input type="number" name="number_of_rooms" class="form-control" >
+                                    <input type="number" name="number_of_rooms" class="form-control"  value="{{ old('number_of_rooms') }}" required>
 
                                     <input type="hidden" name="available_room" id="available_room" class="form-control" >
                                     <div class="mt-2">
@@ -60,7 +70,7 @@
 
                                 <div class="col-md-4">
                                  <label for="input4" class="form-label">Guest</label>
-                                 <input type="text" name="number_of_person" class="form-control" id="number_of_person"  >
+                                 <input type="text" name="number_of_person" class="form-control" id="number_of_person" value="{{ old('number_of_person') }}"  required>
                                 </div>
 
                                  <h3 class="mt-3 mb-5 text-center">Customer Information </h3>
@@ -94,7 +104,7 @@
                                 <div class="col-md-12">
                                     <label for="input11" class="form-label">Address</label>
                                     <textarea name="address" class="form-control"rows="3">
-                                        {{old('address')}}
+                                       {{ old('address') }}
                                     </textarea>
                                 </div>
 
@@ -115,66 +125,58 @@
     </div>
 
 <script>
-$(document).ready(function () {
-
-    function resetAvailability() {
-        $(".availability").text(0);
-        $("#available_room").val(0);
-    }
-
-    // Reset quand on change le type de chambre
-    $("#room_id").on('change', function () {
-        resetAvailability();
-    });
-
-    // Lancer le calcul quand une date change
-    $("#check_in, #check_out").on('change', function () {
-        getAvailability();
-    });
-
-});
+   
+function resetAvailability() {
+    $(".availability").text(0);
+    $("#available_room").val(0);
+}
 
 function getAvailability() {
 
-    var roomtype_id = $("#room_id").val();
+    var roomtype_id = $("#roomtype_id").val();
     var check_in = $("#check_in").val();
     var check_out = $("#check_out").val();
 
-    console.log('roomtype_id:', roomtype_id);
-    console.log('check_in:', check_in);
-    console.log('check_out:', check_out);
-
     if (!roomtype_id || !check_in || !check_out) {
-        return; // on attend que tout soit rempli
+        return;
     }
 
-    var startDate = new Date(check_in);
-    var endDate = new Date(check_out);
-
-    if (startDate > endDate) {
+    if (check_in >= check_out) {
         alert('Check-out must be after Check-in');
-        $("#check_out").val('');
         resetAvailability();
         return;
     }
 
     $.ajax({
         url: "{{ route('check_room_availability') }}",
+        type: "GET",
         data: {
             roomtype_id: roomtype_id,
             check_in: check_in,
             check_out: check_out
         },
         success: function (data) {
-            console.log('response:', data);
             $(".availability").text(data.available_room);
             $("#available_room").val(data.available_room);
         },
         error: function (xhr) {
-            console.error('AJAX error:', xhr.responseText);
+            console.error(xhr.responseText);
         }
     });
 }
+
+$(document).ready(function () {
+
+    $("#roomtype_id").on('change', function () {
+        resetAvailability();
+    });
+
+    $("#check_in, #check_out").on('change', function () {
+        getAvailability();
+    });
+
+});
 </script>
+
 </div>
 @endsection
