@@ -44,138 +44,11 @@ class RoomListController extends Controller
     }
 
 
-//   public function StoreRoomList(Request $request)
-//   {
-    
-    
-//     // Validation côté serveur pour les champs obligatoires
-//     $request->validate([
-//         'roomtype_id' => 'required|exists:room_types,id',
-//         'check_in' => 'required|date',
-//         'check_out' => 'required|date|after:check_in',
-//         'number_of_rooms' => 'required|integer|min:1',
-//         'number_of_person' => 'required|integer|min:1',
-//         'name' => 'required|string|max:255',
-//         'email' => 'required|email|max:255',
-//         'phone' => 'required|string|max:20',
-//         'address' => 'required|string|max:500',
-//     ]);
 
-//     // Vérifier si check_in == check_out
-//     if ($request->check_in == $request->check_out) {
-//         return redirect()->back()->withInput()->with([
-//             'message' => 'You Entered Same Date',
-//             'alert-type' => 'error'
-//         ]);
-//     }
-
-//     DB::beginTransaction();
-
-//     try {
-//         $room = Room::withCount('roomNumbers')->where('roomtype_id', $request->roomtype_id)->firstOrFail();
-
-//         $total_rooms = $room->room_numbers_count; 
-
-//         // Recalculer la disponibilité côté serveur
-//         $sdate = Carbon::parse($request->check_in);
-//         $edate = Carbon::parse($request->check_out)->subDay(); // ne pas compter le check-out
-//         $period = CarbonPeriod::create($sdate, $edate);
-
-//         $dates = collect($period)->map->format('Y-m-d');
-
-//         $maxBooked = 0;
-
-//         foreach ($dates as $date) {
-//               $bookedForDate = RoomBookedDate::where('room_id', $room->id)
-//              ->count(); // ou sum('number_of_rooms') si tu as cette colonne
-//                $maxBooked = max($maxBooked, $bookedForDate);
-//         }
-
- 
-
-//        $available_rooms = $total_rooms - $maxBooked;
-
-
-
-//         if ($available_rooms < $request->number_of_rooms) {
-//             return redirect()->back()->withInput()->with([
-//                 'message' => 'You Entered More Rooms Than Available!',
-//                 'alert-type' => 'error'
-//             ]);
-//         }
-
-//         // Vérifier la capacité de la chambre
-//         if ($room->room_capacity < $request->number_of_person) {
-//             return redirect()->back()->withInput()->with([
-//                 'message' => 'You Entered More Guests Than Room Capacity!',
-//                 'alert-type' => 'error'
-//             ]);
-//         }
-
-//         // Calcul des nuits et du prix
-//         $total_nights = $sdate->diffInDays(Carbon::parse($request->check_out));
-//         $subtotal = $room->price * $total_nights * $request->number_of_rooms;
-//         $discount = ($room->discount / 100) * $subtotal;
-//         $total_price = $subtotal - $discount;
-
-//         // Code de réservation unique
-//         $code = Str::upper(Str::random(9));
-
-//         // Créer la réservation
-//         $booking = Booking::create([
-//             'rooms_id' => $room->id,
-//             'user_id' => Auth::id(),
-//             'check_in' => $sdate->format('Y-m-d'),
-//             'check_out' => Carbon::parse($request->check_out)->format('Y-m-d'),
-//             'number_of_rooms' => $request->number_of_rooms,
-//             'person' => $request->number_of_person,
-//             'total_night' => $total_nights,
-//             'actual_price' => $room->price,
-//             'subtotal' => $subtotal,
-//             'discount' => $discount,
-//             'total_price' => $total_price,
-//             'payment_method' => 'COD',
-//             'payment_status' => 0,
-//             'name' => $request->name,
-//             'email' => $request->email,
-//             'phone' => $request->phone,
-//             'country' => $request->country,
-//             'state' => $request->state,
-//             'zip_code' => $request->zip_code,
-//             'address' => $request->address,
-//             'code' => $code,
-//             'status' => 0,
-//             'created_at' => now(),
-//         ]);
-
-//         // Enregistrer les dates de réservation
-//         foreach ($period as $date) {
-//             RoomBookedDate::create([
-//                 'booking_id' => $booking->id,
-//                 'room_id' => $room->id,
-//                 'book_date' => $date->format('Y-m-d'),
-//             ]);
-//         }
-
-//         DB::commit();
-
-//         return redirect()->back()->with([
-//             'message' => 'Booking Added Successfully',
-//             'alert-type' => 'success'
-//         ]);
-
-//     } catch (\Exception $e) {
-//         DB::rollBack();
-//         return redirect()->back()->withInput()->with([
-//             'message' => 'Something went wrong: ' . $e->getMessage(),
-//             'alert-type' => 'error'
-//         ]);
-//     }
-//   }
 
     
     public function StoreRoomList(Request $request)
-{
+   {
     // Validation des champs
     $request->validate([
         'roomtype_id' => 'required|exists:room_types,id',
@@ -299,7 +172,7 @@ class RoomListController extends Controller
             'alert-type' => 'error'
         ]);
     }
-}
+  }
 
     
 

@@ -272,7 +272,7 @@
         <!-- Room Details Other End -->
 
 
- <script>
+ <!-- <script>
     $(document).ready(function () {
        var check_in = "{{ old('check_in') }}";
        var check_out = "{{ old('check_out') }}";
@@ -349,5 +349,80 @@
 
     })
 
- </script>
+ </script> -->
+
+  <script>
+$(document).ready(function () {
+    var room_id = "{{ $roomDetails->id }}";        // ID de la chambre
+    var total_adult = parseInt($("#total_adult").val());
+    var room_price = parseFloat($("#room_price").val());
+    var discount_p = parseFloat($("#discount_p").val());
+
+    // Vérifier la disponibilité si les dates sont déjà remplies
+    var check_in = $("#check_in").val();
+    var check_out = $("#check_out").val();
+    if(check_in != '' && check_out != ''){
+        getAvailability(check_in, check_out, room_id);
+    }
+
+    // Quand la date de check-out change
+    $("#check_out").on('change', function () {
+        check_in = $("#check_in").val();
+        check_out = $(this).val();
+        if(check_in != '' && check_out != ''){
+            getAvailability(check_in, check_out, room_id);
+        }
+    });
+
+    // Quand le nombre de chambres change
+    $(".number_of_rooms").on('change', function () {
+        check_in = $("#check_in").val();
+        check_out = $("#check_out").val();
+        if(check_in != '' && check_out != ''){
+            getAvailability(check_in, check_out, room_id);
+        }
+    });
+
+    // Fonction pour récupérer la disponibilité via AJAX
+    function getAvailability(check_in, check_out, room_id){
+        $.ajax({
+            url: "{{ route('check_room_availability') }}",
+            data: { room_id: room_id, check_in: check_in, check_out: check_out },
+            success: function(data){
+                $(".available_room").html('Availability : <span class="text-success">'+data.available_room+' Rooms</span>');
+                $("#available_room").val(data.available_room);
+                priceCalculate(data.total_nights);
+            }
+        });
+    }
+
+    // Fonction pour calculer Subtotal / Discount / Total
+    function priceCalculate(total_nights){
+        var select_room = parseInt($("#select_room").val());
+        var sub_total = room_price * total_nights * select_room;
+        var discount_price = (discount_p / 100) * sub_total;
+
+        $(".t_subtotal").text(sub_total.toFixed(2));
+        $(".t_discount").text(discount_price.toFixed(2));
+        $(".t_g_total").text((sub_total - discount_price).toFixed(2));
+    }
+
+    // Validation avant la soumission du formulaire
+    $("#bk_form").on('submit', function () {
+        var av_room = parseInt($("#available_room").val());
+        var select_room = parseInt($("#select_room").val());
+        var nmbr_person = parseInt($("#nmbr_person").val());
+
+        if(select_room > av_room){
+            alert('Sorry, you select maximum number of room');
+            return false;
+        }
+
+        if(nmbr_person > total_adult){
+            alert('Sorry, you select maximum number of person');
+            return false;
+        }
+    });
+});
+</script>
 @endsection

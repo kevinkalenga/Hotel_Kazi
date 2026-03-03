@@ -143,15 +143,17 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/assign_room/{id}', 'AssignRoom')->name('assign_room');
         Route::get('/assign_room/store/{booking_id}/{room_number_id}', 'AssignRoomStore')->name('assign_room_store');
         Route::get('/assign_room_delete/{id}', 'AssignRoomDelete')->name('assign_room_delete');
-     
+
+        // User Booking Route 
+        Route::get('/user/booking', 'UserBooking')->name('user.booking');
        
     });
 
 });
 
 // Admin RoomList
-
-Route::controller(RoomListController::class)->group(function() {
+Route::middleware(['auth', 'adminRole:admin'])->group(function () {
+  Route::controller(RoomListController::class)->group(function() {
        
     Route::get('/view/room/list', 'ViewRoomList')->name('view.room.list');
     Route::get('/add/room/list', 'AddRoomList')->name('add.room.list');
@@ -160,6 +162,7 @@ Route::controller(RoomListController::class)->group(function() {
    
       
       
+  });
 });
 
 

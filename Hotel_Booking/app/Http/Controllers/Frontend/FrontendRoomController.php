@@ -136,45 +136,55 @@ class FrontendRoomController extends Controller
      
     // }
 
-  public function CheckRoomAvailability(Request $request)
-  {
-    $roomtype_id = $request->roomtype_id;
+      
+   
+       public function CheckRoomAvailability(Request $request)
+{
+    $room_id = $request->room_id;
 
-    $startDate = Carbon::parse($request->check_in);
-    $endDate   = Carbon::parse($request->check_out)->subDay();
+    $checkIn  = Carbon::parse($request->check_in);
+    $checkOut = Carbon::parse($request->check_out);
 
-    if ($startDate->gte($endDate)) {
-        return response()->json(['available_room' => 0]);
+    // Vérifie que check-out > check-in
+    if ($checkIn->gte($checkOut)) {
+        return response()->json([
+            'available_room' => 0,
+            'total_nights' => 0
+        ]);
     }
 
-    $period = CarbonPeriod::create($startDate, $endDate);
-    $dates = collect($period)->map(fn($date) => $date->format('Y-m-d'));
+    // Crée la période entre check-in et check-out
+    $period = CarbonPeriod::create($checkIn, $checkOut->copy()->subDay());
+    $dates = collect($period)->map(fn($d) => $d->format('Y-m-d'));
 
-    // Toutes les rooms de ce type
-    $rooms = Room::where('roomtype_id', $roomtype_id)->pluck('id');
-
-    // Total chambres physiques
-    $total_rooms = \App\Models\RoomNumber::whereIn('rooms_id', $rooms)->count();
+    // Nombre total de chambres physiques pour cette room
+    $total_rooms = \App\Models\RoomNumber::where('rooms_id', $room_id)
+                    ->where('status', 'Active')
+                    ->count();
 
     $maxBooked = 0;
 
     foreach ($dates as $date) {
+        // Récupère les réservations confirmées qui incluent cette date
         $bookingIds = RoomBookedDate::where('book_date', $date)
-            ->pluck('booking_id');
+                        ->pluck('booking_id');
 
         $bookedCount = Booking::whereIn('id', $bookingIds)
-            ->whereIn('rooms_id', $rooms)
-            ->withCount('assign_rooms')
-            ->get()
-            ->sum('assign_rooms_count');
+                        ->where('rooms_id', $room_id)
+                        ->where('status', 1) // seulement les réservations confirmées
+                        ->withCount('assign_rooms')
+                        ->get()
+                        ->sum('assign_rooms_count');
 
         $maxBooked = max($maxBooked, $bookedCount);
     }
 
     $available_room = max($total_rooms - $maxBooked, 0);
 
+    // Retourne également le nombre de nuits
     return response()->json([
-        'available_room' => $available_room
+        'available_room' => $available_room,
+        'total_nights'   => $checkIn->diffInDays($checkOut)
     ]);
   }
 
