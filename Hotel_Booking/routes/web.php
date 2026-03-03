@@ -146,6 +146,7 @@ Route::middleware(['auth'])->group(function() {
 
         // User Booking Route 
         Route::get('/user/booking', 'UserBooking')->name('user.booking');
+        Route::get('/user/invoice/{id}', 'UserInvoice')->name('user.invoice');
        
     });
 
