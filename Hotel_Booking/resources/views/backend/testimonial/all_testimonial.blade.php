@@ -23,7 +23,7 @@
 					</div>
 					<div class="ms-auto">
 						<div class="btn-group">
-							 <a href="{{route('add.team')}}" class="btn btn-primary px-5">Add Testimonial</a>
+							 <a href="{{route('add.testimonial')}}" class="btn btn-primary px-5">Add Testimonial</a>
 							
 						</div>
 					</div>
@@ -41,7 +41,7 @@
 										<th>Image</th>
 										<th>Name</th>
 										<th>City</th>
-										<th>Message</th>
+										
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -54,7 +54,6 @@
 										</td>
 										<td>{{$item->name}}</td>
 										<td>{{$item->city}}</td>
-										<td>{!! $item->message !!}</td>
 										<td>
 										   <a href="{{route('edit.team', $item->id)}}" class="btn btn-warning px-3 radius-30 me-2"> Edit</a>
 										   <a href="{{route('delete.team', $item->id)}}" class="btn btn-danger px-3 radius-30 delete-button"> Delete</a>

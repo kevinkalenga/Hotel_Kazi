@@ -112,7 +112,7 @@
 					<ul>
 						<li> <a href="{{route('all.testimonial')}}"><i class='bx bx-radio-circle'></i>All Testimonial</a>
 						</li>
-						<li> <a href="{{route('smtp.setting')}}"><i class='bx bx-radio-circle'></i>Add Testimonial</a>
+						<li> <a href="{{route('add.testimonial')}}"><i class='bx bx-radio-circle'></i>Add Testimonial</a>
 						</li>
 						
 					</ul>
