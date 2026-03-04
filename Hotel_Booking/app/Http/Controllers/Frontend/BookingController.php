@@ -21,6 +21,7 @@ use Stripe\Charge;
 use App\Models\BookingRoomList;
 use App\Models\RoomNumber;
 use App\Mail\BookConfirm;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -241,11 +242,11 @@ class BookingController extends Controller
         $sendMail = Booking::find($id);
 
         $data = [
-            'check_in' => $sendmail->check_in,
-            'check_out' => $sendmail->check_out,
-            'name' => $sendmail->name,
-            'email' => $sendmail->email,
-            'phone' => $sendmail->phone,
+            'check_in' => $sendMail->check_in,
+            'check_out' => $sendMail->check_out,
+            'name' => $sendMail->name,
+            'email' => $sendMail->email,
+            'phone' => $sendMail->phone,
         ];
 
         Mail::to($sendMail->email)->send(new BookConfirm($data));
