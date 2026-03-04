@@ -117,4 +117,24 @@ class TestimonialController extends Controller
             'alert-type' => 'success'
         ]);
   }
+
+   public function DeleteTestimonial($id)
+  {
+    $item = Testimonial::findOrFail($id);
+
+    // Supprimer l'image si elle existe
+    if ($item->image && file_exists(public_path($item->image))) {
+        unlink(public_path($item->image));
+    }
+
+    // Supprimer le testimonial
+    $item->delete();
+
+    $notification = [
+        'message' => 'Testimonial Deleted Successfully',
+        'alert-type' => 'success'
+    ];
+
+    return redirect()->back()->with($notification);
+  }
 }

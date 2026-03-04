@@ -180,6 +180,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
       Route::post('/store/testimonial', 'StoreTestimonial')->name('testimonial.store'); 
       Route::get('/edit/testimonial/{id}', 'EditTestimonial')->name('edit.testimonial'); 
       Route::post('/update/testimonial', 'UpdateTestimonial')->name('testimonial.update');
+      Route::get('/delete/testimonial/{id}', 'DeleteTestimonial')->name('delete.testimonial');
      
     
    });

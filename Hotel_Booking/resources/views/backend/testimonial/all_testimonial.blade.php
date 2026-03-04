@@ -56,7 +56,7 @@
 										<td>{{$item->city}}</td>
 										<td>
 										   <a href="{{route('edit.testimonial', $item->id)}}" class="btn btn-warning px-3 radius-30 me-2"> Edit</a>
-										   <a href="{{route('delete.team', $item->id)}}" class="btn btn-danger px-3 radius-30 delete-button"> Delete</a>
+										   <a href="{{route('delete.testimonial', $item->id)}}" class="btn btn-danger px-3 radius-30 delete-button"> Delete</a>
                                         </td>
 									 </tr>
 									@endforeach
