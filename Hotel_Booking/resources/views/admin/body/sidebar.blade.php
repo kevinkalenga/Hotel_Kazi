@@ -103,6 +103,20 @@
 						
 					</ul>
 				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+						</div>
+						<div class="menu-title">Testimonial</div>
+					</a>
+					<ul>
+						<li> <a href="{{route('all.testimonial')}}"><i class='bx bx-radio-circle'></i>All Testimonial</a>
+						</li>
+						<li> <a href="{{route('smtp.setting')}}"><i class='bx bx-radio-circle'></i>Add Testimonial</a>
+						</li>
+						
+					</ul>
+				</li>
 				
 				
 				

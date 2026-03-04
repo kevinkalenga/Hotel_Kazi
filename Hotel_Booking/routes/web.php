@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\RoomTypeController;
 use App\Http\Controllers\Backend\RoomController;
 use App\Http\Controllers\Backend\RoomListController;
 use App\Http\Controllers\Backend\SettingController;
+use App\Http\Controllers\Backend\TestimonialController;
 
 use App\Http\Controllers\Frontend\FrontendRoomController;
 use App\Http\Controllers\Frontend\BookingController;
@@ -153,8 +154,9 @@ Route::middleware(['auth'])->group(function() {
 
 });
 
-// Admin RoomList
+
 Route::middleware(['auth', 'adminRole:admin'])->group(function () {
+    // Admin RoomList
     Route::controller(RoomListController::class)->group(function() {
        
       Route::get('/view/room/list', 'ViewRoomList')->name('view.room.list');
@@ -162,10 +164,18 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
       Route::post('/store/roomlist', 'StoreRoomList')->name('store.roomlist'); 
     
    });
+   // Admin Setting Smtp Routes
     Route::controller(SettingController::class)->group(function() {
        
       Route::get('/smtp/setting', 'SmtpSetting')->name('smtp.setting');
       Route::post('/smtp/update', 'SmtpUpdate')->name('smtp.update');
+     
+    
+   });
+    // Admin Testimonial Routes
+   Route::controller(TestimonialController::class)->group(function() {
+       
+      Route::get('/all/testimonial', 'AllTestimonial')->name('all.testimonial');
      
     
    });
