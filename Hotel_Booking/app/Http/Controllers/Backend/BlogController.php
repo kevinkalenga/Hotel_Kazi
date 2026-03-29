@@ -18,7 +18,7 @@ class BlogController extends Controller
         return view('backend.category.blog_category', compact('category'));
     }
 
-    public function storeBlogCategory(Request $request)
+    public function StoreBlogCategory(Request $request)
     {
         // Validation
         $request->validate([
@@ -42,5 +42,50 @@ class BlogController extends Controller
     {
       $categories = BlogCategory::find($id);
       return response()->json($categories);
+    }
+
+    
+    
+    public function UpdateBlogCategory(Request $request)
+    {
+       // Validation
+       $request->validate([
+           'cat_id' => 'required|exists:blog_categories,id',
+           'category_name' => 'required|string|max:255',
+       ]);
+
+       // Récupérer la catégorie ou renvoyer 404 si introuvable
+       $category = BlogCategory::findOrFail($request->cat_id);
+
+       // Mettre à jour le nom et le slug
+       $category->update([
+           'category_name' => $request->category_name,
+           'category_slug' => Str::slug($request->category_name),
+       ]);
+
+       // Notification
+       $notification = [
+           'message' => 'Blog Category Updated Successfully',
+           'alert-type' => 'success'
+       ];
+
+       return redirect()->back()->with($notification);
+    }
+
+    public function DeleteBlogCategory($id)
+    {
+       // Récupérer la catégorie ou renvoyer 404 si introuvable
+       $category = BlogCategory::findOrFail($id);
+
+       // Supprimer la catégorie
+       $category->delete();
+
+       // Notification
+       $notification = [
+           'message' => 'Blog Category Deleted Successfully',
+           'alert-type' => 'success'
+       ];
+
+       return redirect()->back()->with($notification);
     }
 }

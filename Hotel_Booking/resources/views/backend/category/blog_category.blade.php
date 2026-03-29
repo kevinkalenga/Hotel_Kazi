@@ -57,7 +57,7 @@
 										<td>
 										   <button type="button" class="btn btn-warning px-3 radius-30" 
 										   data-bs-toggle="modal" data-bs-target="#category" id="{{$item->id}}" onclick="categoryEdit(this.id)">Edit</button>
-										   <a href="{{route('delete.team', $item->id)}}" class="btn btn-danger px-3 radius-30 delete-button"> Delete</a>
+										   <a href="{{route('delete.blog.category', $item->id)}}" class="btn btn-danger px-3 radius-30 delete-button" id="delete"> Delete</a>
                                         </td>
 									 </tr>
 									@endforeach
@@ -109,9 +109,9 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form action="{{ route('store.blog.category') }}" method="POST">
+					<form action="{{ route('update.blog.category') }}" method="POST">
 					  @csrf
-					  <input type="text" name="cat_id" id="cat_id">
+					  <input type="hidden" name="cat_id" id="cat_id">
 						<div class="form-group mb-3">
                             <label for="" class="form-label">Blog Category Name</label>
 							<input type="text" name="category_name" class="form-control" id="cat">
