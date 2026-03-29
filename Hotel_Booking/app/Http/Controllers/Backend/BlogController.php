@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\BlogCategory;
+use App\Models\BlogPost;
 use Illuminate\Support\Str;
 
 class BlogController extends Controller
@@ -87,5 +88,13 @@ class BlogController extends Controller
        ];
 
        return redirect()->back()->with($notification);
+    }
+
+    /////////////////////////// All Blog Post Methods /////////////////////////////
+
+    public function AllBlogPost()
+    {
+        $post = BlogPost::latest()->get();
+        return view('backend.post.all_post', compact('post'));
     }
 }
