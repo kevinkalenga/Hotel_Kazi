@@ -190,6 +190,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
        
       Route::get('/blog/category', 'BlogCategory')->name('blog.category');
       Route::post('/store/blog/category', 'StoreBlogCategory')->name('store.blog.category');
+      Route::get('/edit/blog/category/{id}', 'EditBlogCategory');
      
     
    });
