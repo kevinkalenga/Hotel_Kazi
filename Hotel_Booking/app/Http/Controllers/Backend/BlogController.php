@@ -247,6 +247,18 @@ class BlogController extends Controller
 
         return view('frontend.blog.blog_details', compact('blog', 'bCategory', 'lPost'));
     }
+    public function BlogCatList($id)
+    {
+         
+        // get the specifique blog category
+        //  $blog = BlogPost::whereIn('blogcat_id', [1,2,3])->get();
+        
+       
+        $blog = BlogPost::where('blogcat_id', $id)->get();
+        $bCategory = BlogCategory::latest()->get();
+        $lPost = BlogPost::latest()->limit(3)->get();
+        return view('frontend.blog.blog_cat_list', compact('blog', 'bCategory', 'lPost'));
+    }
 
 
     

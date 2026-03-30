@@ -143,7 +143,7 @@
                                  @foreach($bCategory as $cat)
                                     <ul>
                                         <li>
-                                            <a href="#">{{$cat->category_name}}</a>
+                                            <a href="{{url('/blog/cat/list/'.$cat->id)}}">{{$cat->category_name}}</a>
                                         </li>
                                        
                                     </ul>

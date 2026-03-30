@@ -16,7 +16,7 @@
                   @foreach($blog as $item)
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-item">
-                            <a href="blog-details.html">
+                            <a href="{{url('blog/details/'.$item->post_slug)}}">
                                 <img src="{{asset($item->post_image)}}" alt="Images">
                             </a>
                             <div class="content">

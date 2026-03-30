@@ -221,6 +221,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
     Route::controller(BlogController::class)->group(function() {
        
         Route::get('/blog/details/{slug}', 'BlogDetails');
+        Route::get('/blog/cat/list/{id}', 'BlogCatList');
        
        
       
