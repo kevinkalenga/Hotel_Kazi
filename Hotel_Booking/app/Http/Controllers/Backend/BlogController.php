@@ -265,7 +265,7 @@ class BlogController extends Controller
          
        
         
-        $blog = BlogPost::latest()->get();
+        $blog = BlogPost::latest()->paginate(3);
        
         $bCategory = BlogCategory::latest()->get();
         $lPost = BlogPost::latest()->limit(3)->get();
