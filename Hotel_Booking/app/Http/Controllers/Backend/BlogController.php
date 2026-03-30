@@ -251,7 +251,7 @@ class BlogController extends Controller
     {
          
         // get the specifique blog category
-        //  $blog = BlogPost::whereIn('blogcat_id', [1,2,3])->get();
+       
         
         $blog = BlogPost::where('blogcat_id', $id)->get();
         $nameCat = BlogCategory::where('id', $id)->first();
@@ -259,6 +259,17 @@ class BlogController extends Controller
         $bCategory = BlogCategory::latest()->get();
         $lPost = BlogPost::latest()->limit(3)->get();
         return view('frontend.blog.blog_cat_list', compact('blog', 'bCategory', 'lPost', 'nameCat'));
+    }
+    public function BlogList()
+    {
+         
+       
+        
+        $blog = BlogPost::latest()->get();
+       
+        $bCategory = BlogCategory::latest()->get();
+        $lPost = BlogPost::latest()->limit(3)->get();
+        return view('frontend.blog.blog_all', compact('blog', 'bCategory', 'lPost'));
     }
 
 

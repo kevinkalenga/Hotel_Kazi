@@ -11,9 +11,9 @@
                             <a href="{{url('/')}}">Home</a>
                         </li>
                         <li><i class='bx bx-chevron-right'></i></li>
-                        <li>{{$nameCat->category_name}}</li>
+                        <li>Blog</li>
                     </ul>
-                    <h3>{{$nameCat->category_name}}</h3>
+                    <h3>Blog</h3>
                 </div>
             </div>
         </div>
