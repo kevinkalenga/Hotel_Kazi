@@ -6,12 +6,12 @@
 <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Add Team</div>
+        <div class="breadcrumb-title pe-3">Add Post</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Team</li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Post</li>
                 </ol>
             </nav>
         </div>
@@ -24,8 +24,8 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body p-4">
-                            <form class="row g-3" id="myForm">
-
+                            <form class="row g-3" method="POST" action="{{ route('store.blog.post') }}" enctype="multipart/form-data">
+                                 @csrf
                                 <!-- Blog Category -->
                                 <div class="col-md-6">
                                     <label for="input7" class="form-label">Blog Category</label>
@@ -40,7 +40,7 @@
                                 <!-- Post Title -->
                                 <div class="col-md-6">
                                     <label for="input1" class="form-label">Post Title</label>
-                                    <input type="text" name="post_titile" class="form-control" id="input1">
+                                    <input type="text" name="post_title" class="form-control" id="input1">
                                 </div>
 
                                 <!-- Short Description -->
