@@ -11,9 +11,9 @@
                             <a href="index.html">Home</a>
                         </li>
                         <li><i class='bx bx-chevron-right'></i></li>
-                        <li>Blog Style Two</li>
+                        <li>{{$nameCat->category_name}}</li>
                     </ul>
-                    <h3>Blog Style Two</h3>
+                    <h3>{{$nameCat->category_name}}</h3>
                 </div>
             </div>
         </div>
@@ -84,29 +84,21 @@
                             <div class="services-bar-widget">
                                 <h3 class="title">Blog Category</h3>
                                 <div class="side-bar-categories">
+                                   
+                                  @foreach($bCategory as $cat)
                                     <ul>
                                         <li>
-                                            <a href="#">Conference Rooms Related</a>
+                                            <a href="#">{{$cat->category_name}}</a>
                                         </li>
-                                        <li>
-                                            <a href="#">Hotel Rooms Related</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Resort Reservation Related</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Weeding Hall Related</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Community Centre Related</a>
-                                        </li>
+                                       
                                     </ul>
+                                  @endforeach
                                 </div>
                             </div>
                             <div class="side-bar-widget">
                                 <h3 class="title">Recent Posts</h3>
                                 <div class="widget-popular-post">
-                                    <article class="item">
+                                    {{--<article class="item">
                                         <a href="blog-details.html" class="thumb">
                                             <span class="full-image cover bg1" role="img"></span>
                                         </a>
@@ -173,7 +165,31 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                    </article>--}}
+                                   @foreach($lPost as $post)
+                                    <article class="item">
+                                        <a href="blog-details.html" class="thumb">
+                                             <img src="{{asset($post->post_image)}}" alt="Images" style="width:80px; height:80px;">
+                                        </a>
+                                        <div class="info">
+                                            <h4 class="title-text">
+                                                <a href="blog-details.html">
+                                                   {{$post->post_title}}
+                                                </a>
+                                            </h4>
+                                            <ul>
+                                                <li>
+                                                    <i class='bx bx-user'></i>
+                                                    29K
+                                                </li>
+                                                <li>
+                                                    <i class='bx bx-message-square-detail'></i>
+                                                    15K
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </article>
+                                  @endforeach
                                 </div>
                             </div>
 
