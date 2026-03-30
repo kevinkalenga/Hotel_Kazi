@@ -10,6 +10,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Auth;
 
 class BlogController extends Controller
@@ -107,8 +108,8 @@ class BlogController extends Controller
 
 
     
-    public function StoreBlogPost(Request $request)
-{
+  public function StoreBlogPost(Request $request)
+  {
     // Validation des champs
     $request->validate([
         'blogcat_id' => 'required|exists:blog_categories,id',
@@ -155,7 +156,89 @@ class BlogController extends Controller
     ];
 
     return redirect()->route('all.blog.post')->with($notification);
+  }
+
+  // Edit blog post
+    public function EditBlogPost($id)
+    {
+        $blogcat = BlogCategory::latest()->get();
+        $post = BlogPost::findOrFail($id); // sécurité si ID inexistant
+        return view('backend.post.edit_post', compact('blogcat', 'post'));
+    }
+
+
+    // Update blog post
+ 
+   public function UpdateBlogPost(Request $request)
+   {
+    $post_id = $request->id;
+
+     $data = [
+        'blogcat_id' => $request->blogcat_id,
+        'user_id' => Auth::user()->id,
+        'post_title' => $request->post_title, 
+        'post_slug' => strtolower(str_replace(' ', '-', $request->post_title)),
+        'short_descp' => $request->short_descp,
+        'long_descp' => $request->long_descp,
+        'created_at' => Carbon::now(),
+     ];
+
+      // Gestion de l'image si upload
+     if ($request->hasFile('post_image')) {
+        $image = $request->file('post_image');
+        $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        $uploadPath = 'upload/post';
+
+        // Crée le dossier s'il n'existe pas
+        if (!file_exists(public_path($uploadPath))) {
+            mkdir(public_path($uploadPath), 0755, true);
+        }
+
+        // Déplace l'image
+        $image->move(public_path($uploadPath), $name_gen);
+        $data['post_image'] = $uploadPath . '/' . $name_gen;
+
+        // Supprime l'ancienne image si elle existe
+        $oldPost = BlogPost::findOrFail($post_id);
+        if ($oldPost->post_image && file_exists(public_path($oldPost->post_image))) {
+            unlink(public_path($oldPost->post_image));
+        }
+      }
+
+      // Mettre à jour le post
+      BlogPost::findOrFail($post_id)->update($data);
+
+      $notification = [
+        'message' => 'BlogPost Updated Successfully',
+        'alert-type' => 'success'
+      ];
+
+      return redirect()->route('all.blog.post')->with($notification);
 }
+
+
+    // Delete blog post
+    public function DeleteBlogPost($id)
+    {
+        $item = BlogPost::findOrFail($id);
+
+        // Supprimer l'image si elle existe
+        if ($item->post_image && file_exists(public_path($item->post_image))) {
+            unlink(public_path($item->post_image));
+        }
+
+        // Supprimer le post
+        $item->delete();
+
+        // Notification
+        $notification = [
+            'message' => 'BlogPost Deleted Successfully',
+            'alert-type' => 'success',
+        ];
+
+        return redirect()->back()->with($notification);
+    }
+
 
     
 }
