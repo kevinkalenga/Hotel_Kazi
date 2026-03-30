@@ -205,11 +205,26 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
       Route::get('/edit/blog/post/{id}', 'EditBlogPost')->name('edit.blog.post');
       Route::post('/update/blog/post', 'UpdateBlogPost')->name('update.blog.post');
       Route::get('/delete/blog/post/{id}', 'DeleteBlogPost')->name('delete.blog.post');
+
+
     
    });
 
 
 });
+
+
+
+
+// Frontend Blog All Routes
+
+    Route::controller(BlogController::class)->group(function() {
+       
+        Route::get('/blog/details/{slug}', 'BlogDetails');
+       
+       
+      
+    });
 
 
 
