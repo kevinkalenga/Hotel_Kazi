@@ -99,14 +99,15 @@
                                     @endphp
                                      
                                      @auth
-                                      <form id="contactForm">
+                                      <form method="POST" action="{{route('store.comment')}}">
+                                        @csrf
                                         <div class="row">
                                            
             
                                             <input type="hidden" name="post_id" value="{{$blog->id}}">
             
                                             @if($userData)
-                                              <input type="text" name="user_id" value="{{$userData->id}}">
+                                              <input type="hidden" name="user_id" value="{{$userData->id}}">
 
                                             @endif
                                             
