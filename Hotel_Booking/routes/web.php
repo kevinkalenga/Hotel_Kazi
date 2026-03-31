@@ -212,6 +212,18 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
    });
 
 
+   // Frontend Comment All Routes
+
+    Route::controller(CommentController::class)->group(function() {
+       
+        Route::get('/all/comment/', 'AllComment')->name('all.comment');
+        
+       
+       
+      
+    });
+
+
 });
 
 
