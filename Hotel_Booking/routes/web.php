@@ -217,7 +217,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
     Route::controller(CommentController::class)->group(function() {
        
         Route::get('/all/comment/', 'AllComment')->name('all.comment');
-        
+        Route::post('/update/comment/status', 'UpdateCommentStatus')->name('update.comment.status'); 
        
        
       

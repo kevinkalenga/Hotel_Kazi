@@ -1,7 +1,13 @@
 @extends('admin.admin_dashboard')
 
 @section('admin') 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+<style>
+    .large-checkbox{
+        transform: scale(1.5);
+    }
+</style>
 <div class="page-content"> 
 
     <!--breadcrumb-->
@@ -55,16 +61,10 @@
                                 <td>{{ Str::limit($item['post']['post_title'], 30) }}</td>
                                 <td>{{ Str::limit($item->message, 40) }}</td>
                                 <td>
-                                    <a href="{{ route('edit.team', $item->id) }}" 
-                                       class="btn btn-warning px-3 radius-30">
-                                        Edit
-                                    </a>
-
-                                    <a href="{{ route('delete.team', $item->id) }}" 
-                                       class="btn btn-danger px-3 radius-30" 
-                                       id="delete">
-                                        Delete
-                                    </a>
+                                  <div class="form-check-danger form-check form-switch">
+                                    <input class="form-check-input status-toggle large-checkbox" type="checkbox"  data-comment-id="{{ $item->id }}" {{ $item->status ? 'checked' : '' }} >
+                                    <label class="form-check-label" > </label>
+                                  </div>
                                 </td>
                             </tr>
                         @endforeach 
@@ -79,5 +79,35 @@
     <hr/>
 
 </div>
+
+
+
+<script>
+    $(document).ready(function(){
+        $('.status-toggle').on('change', function(){
+            var commentId = $(this).data('comment-id');
+            var isChecked = $(this).is(':checked');
+
+            // Send an ajax request to update status 
+            $.ajax({
+                url: "{{ route('update.comment.status') }}",
+                method: "POST",
+                data: {
+                    comment_id: commentId,
+                    is_checked: isChecked ? 1 : 0,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response){
+                    toastr.success(response.message);
+
+                },
+                error: function(){
+
+                }
+            }); 
+
+        });
+    });
+</script>
 
 @endsection
