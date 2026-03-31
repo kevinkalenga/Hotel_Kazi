@@ -154,7 +154,12 @@ class BookingController extends Controller
             if ($s_pay->status === 'succeeded') {
                 $payment_status = 1;       // paiement réussi
                 $transaction_id = $s_pay->id; // récupère l'ID unique de Stripe
-            }
+            } else {
+              return redirect()->back()->with([
+                'message' => 'Payment failed',
+                'alert-type' => 'error'
+            ]);
+        }
         } catch (\Exception $e) {
             // En cas d'erreur Stripe (carte refusée, token invalide, etc.)
             $notification = [
@@ -191,6 +196,7 @@ class BookingController extends Controller
     $data->code = $code;                             // Code unique de réservation
     $data->status = 0;                               // 0 = non confirmé / 1 = confirmé
     $data->created_at = Carbon::now();              // Date de création
+    \Log::info('Stripe transaction ID: '.$transaction_id);
     $data->save();                                  // Enregistre la réservation en base
 
     // Enregistrement des dates réservées dans room_booked_dates
