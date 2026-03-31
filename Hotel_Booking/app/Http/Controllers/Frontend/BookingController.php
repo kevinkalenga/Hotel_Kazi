@@ -278,7 +278,7 @@ class BookingController extends Controller
     $checkIn  = Carbon::parse($request->check_in);
     $checkOut = Carbon::parse($request->check_out);
 
-    // ✅ Calcul correct du nombre de nuits
+    //  Calcul correct du nombre de nuits
     $total_night = $checkIn->diffInDays($checkOut);
 
     // Sécurité
@@ -295,7 +295,7 @@ class BookingController extends Controller
     $discount = $booking->discount;
     $total_price = $subtotal - $discount;
 
-    // ✅ Mise à jour booking
+    //  Mise à jour booking
     $booking->update([
         'check_in' => $checkIn->format('Y-m-d'),
         'check_out' => $checkOut->format('Y-m-d'),
@@ -309,7 +309,7 @@ class BookingController extends Controller
     BookingRoomList::where('booking_id', $id)->delete();
     RoomBookedDate::where('booking_id', $id)->delete();
 
-    // ✅ Réinsertion correcte des dates réservées
+    //  Réinsertion correcte des dates réservées
     $period = CarbonPeriod::create($checkIn, $checkOut->copy()->subDay());
 
     foreach ($period as $date) {
