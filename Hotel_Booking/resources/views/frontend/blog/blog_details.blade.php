@@ -157,12 +157,12 @@
                                 <div class="widget-popular-post">
                                  @foreach($lPost as $post)
                                     <article class="item">
-                                        <a href="blog-details.html" class="thumb">
+                                        <a href="{{url('/blog/details/'.$post->post_slug)}}" class="thumb">
                                              <img src="{{asset($post->post_image)}}" alt="Images" style="width:80px; height:80px;">
                                         </a>
                                         <div class="info">
                                             <h4 class="title-text">
-                                                <a href="blog-details.html">
+                                                <a href="{{url('/blog/details/'.$post->post_slug)}}">
                                                    {{$post->post_title}}
                                                 </a>
                                             </h4>
