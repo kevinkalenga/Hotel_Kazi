@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\TestimonialController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\CommentController;
 use App\Http\Controllers\Backend\ReportController;
+use App\Http\Controllers\Backend\GalleryController;
 
 use App\Http\Controllers\Frontend\FrontendRoomController;
 use App\Http\Controllers\Frontend\BookingController;
@@ -241,6 +242,12 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
      
     
    });
+    // Gallery All Route
+    Route::controller(GalleryController::class)->group(function() {
+       
+      Route::get('/all/gallery', 'AllGallery')->name('all.gallery');
+       
+    });
 
 
 });
