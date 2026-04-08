@@ -17,13 +17,13 @@
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">All Gallery</li>
+								<li class="breadcrumb-item active" aria-current="page">All Gallery Photo</li>
 							</ol>
 						</nav>
 					</div>
 					<div class="ms-auto">
 						<div class="btn-group">
-							 <a href="{{route('add.team')}}" class="btn btn-primary px-5">Add Gallery</a>
+							 <a href="{{route('add.gallery')}}" class="btn btn-primary px-5">Add Gallery</a>
 							
 						</div>
 					</div>
