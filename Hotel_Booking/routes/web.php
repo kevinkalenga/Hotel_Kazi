@@ -284,6 +284,15 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
     });
 
 
+/// Frontend Gallery All Route 
+Route::controller(GalleryController::class)->group(function(){
+ 
+    Route::get('/gallery', 'ShowGallery')->name('show.gallery');
+   
+ 
+});
+
+
 
 
 

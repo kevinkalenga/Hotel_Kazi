@@ -59,7 +59,7 @@
                                         </a>
                                     </li> 
                                     <li>
-                                        <a href="gallery.html" target="_blank">
+                                        <a href="{{ route('show.gallery') }}" target="_blank">
                                             <i class='bx bx-caret-right'></i>
                                             Gallery
                                         </a>
@@ -109,7 +109,7 @@
                                         </a>
                                     </li> 
                                     <li>
-                                        <a href="gallery.html" target="_blank">
+                                        <a href="{{ route('show.gallery') }}" target="_blank">
                                             <i class='bx bx-caret-right'></i>
                                             Gallery
                                         </a>
