@@ -251,6 +251,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
       Route::get('/edit/gallery/{id}', 'EditGallery')->name('edit.gallery');
       Route::post('/update/gallery/{id}', 'UpdateGallery')->name('update.gallery');
       Route::get('/delete/gallery/{id}', 'DeleteGallery')->name('delete.gallery');
+      Route::post('/delete/gallery/multiple', 'DeleteGalleryMultiple')->name('delete.gallery.multiple');
        
     });
 

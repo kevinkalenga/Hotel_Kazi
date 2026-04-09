@@ -119,4 +119,36 @@ class GalleryController extends Controller
 
        return redirect()->back()->with($notification);
     }
+
+    public function DeleteGalleryMultiple(Request $request)
+    {
+        $selectedItems = $request->input('selectedItem', []);
+
+        if (!empty($selectedItems)) {
+
+            foreach ($selectedItems as $itemId) {
+
+                $item = Gallery::find($itemId);
+
+                if ($item) {
+
+                    $imgPath = public_path($item->photo_name);
+
+                    // Vérifier si le fichier existe
+                    if (file_exists($imgPath)) {
+                        unlink($imgPath);
+                    }
+
+                    $item->delete();
+                }
+            }
+        }
+
+        $notification = [
+            'message' => 'Selected Images Deleted Successfully',
+            'alert-type' => 'success'
+        ];
+
+        return redirect()->back()->with($notification);
+    }
 }
