@@ -253,6 +253,9 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
       Route::post('/update/gallery/{id}', 'UpdateGallery')->name('update.gallery');
       Route::get('/delete/gallery/{id}', 'DeleteGallery')->name('delete.gallery');
       Route::post('/delete/gallery/multiple', 'DeleteGalleryMultiple')->name('delete.gallery.multiple');
+
+      // contact message admin route  
+      Route::get('/contact/message', 'AdminContactMessage')->name('contact.message');
        
     });
 

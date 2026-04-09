@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\Gallery;
+use App\Models\Contact;
 
 class GalleryController extends Controller
 {
@@ -157,5 +158,12 @@ class GalleryController extends Controller
      public function ShowGallery(){
         $gallery = Gallery::latest()->get();
         return view('frontend.gallery.show_gallery',compact('gallery'));
+     }
+
+     public function AdminContactMessage(){
+
+        $contact = Contact::latest()->get();
+        return view('backend.contact.contact_message',compact('contact'));
+
      }
 }
