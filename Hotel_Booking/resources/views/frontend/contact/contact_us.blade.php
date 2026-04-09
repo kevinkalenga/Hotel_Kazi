@@ -37,7 +37,8 @@
 
                     <div class="col-lg-6">
                         <div class="contact-form">
-                            <form id="contactForm">
+                            <form action="{{ route('store.contact') }}" method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6">
                                         <div class="form-group">
@@ -55,14 +56,14 @@
     
                                     <div class="col-lg-6 col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" name="phone_number" id="phone_number" required data-error="Please enter your number" class="form-control" placeholder="Phone">
+                                            <input type="text" name="phone" id="phone" required data-error="Please enter your number" class="form-control" placeholder="Phone">
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
     
                                     <div class="col-lg-6 col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" name="msg_subject" id="msg_subject" class="form-control" required data-error="Please enter your subject" placeholder="Your Subject">
+                                            <input type="text" name="subject" id="subject" class="form-control" required data-error="Please enter your subject" placeholder="Your Subject">
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
@@ -74,20 +75,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group checkbox-option">
-                                            <input type="checkbox" id="chb2">
-                                            <p>
-                                                Accept <a href="terms-condition.html">Terms & Conditions</a> And <a href="privacy-policy.html">Privacy Policy.</a>
-                                            </p>
-                                        </div>
-                                    </div>
+                                    
     
                                     <div class="col-lg-12 col-md-12">
                                         <button type="submit" class="default-btn btn-bg-three">
                                             Send Message
                                         </button>
-                                        <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                      
                                         <div class="clearfix"></div>
                                     </div>
                                 </div>
@@ -98,7 +92,12 @@
             </div>
         </div>
         <!-- Contact Area End -->
+ 
+ @php  
 
+  $setting = App\Models\SiteSetting::find(1);
+
+ @endphp
          <!-- contact Another -->
         <div class="contact-another pb-70">
             <div class="container">
@@ -118,22 +117,22 @@
                                     <li>
                                         <i class='bx bx-home-alt'></i>
                                         <div class="content">
-                                            <span>123 Virgil A Stanton, Virginia, USA</span>
-                                            <span>163 Virgil A Stanton, Virginia, USA</span>
+                                            <span>{{$setting->address}}</span>
+                                            
                                         </div>
                                     </li>
                                     <li>
                                         <i class='bx bx-phone-call'></i>
                                         <div class="content">
-                                            <span><a href="tel:+1(123)4567890">+1 (123) 456 7890</a></span>
-                                            <span><a href="tel:+1(123)4567896">+1 (123) 456 7896</a></span>
+                                            <span><a href="{{$setting->phone}}">{{$setting->phone}}</a></span>
+                                            
                                         </div>
                                     </li>
                                     <li>
                                         <i class='bx bx-envelope'></i>
                                         <div class="content">
-                                            <span><a href="info@atoli.com">info@atoli.com</a></span>
-                                            <span><a href="hello@atoli.com">hello@atoli.com</a></span>
+                                            <span><a href="{{$setting->email}}">{{$setting->email}}</a></span>
+                                           
                                         </div>
                                     </li>
                                 </ul>
