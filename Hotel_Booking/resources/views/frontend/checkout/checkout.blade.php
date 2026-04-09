@@ -9,7 +9,7 @@
     <div class="container">
         <div class="inner-title">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="{{url('/')}}">Home</a></li>
                 <li><i class='bx bx-chevron-right'></i></li>
                 <li>Check Out</li>
             </ul>
