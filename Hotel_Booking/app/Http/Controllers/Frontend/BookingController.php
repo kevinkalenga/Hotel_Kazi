@@ -20,6 +20,9 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use App\Models\BookingRoomList;
 use App\Models\RoomNumber;
+use App\Models\User;
+use App\Notifications\BookingComplete;
+use Illuminate\Support\Facades\Notification;
 use App\Mail\BookConfirm;
 use Illuminate\Support\Facades\Mail;
 
@@ -95,135 +98,140 @@ class BookingController extends Controller
      
    public function CheckoutStore(Request $request)
    {
-    // Validation des champs obligatoires côté serveur
-    $request->validate([
-        'name' => 'required',
-        'email' => 'required',
-        'country' => 'required',
-        'phone' => 'required',
-        'address' => 'required',
-        'state' => 'required',
-        'zip_code' => 'required',
-        'payment_method' => 'required', 
-    ]);
-
-    // Récupère les données de réservation stockées en session
-    $book_data = Session::get('book_date'); 
-
-    // Convertit les dates de check-in et check-out en objets Carbon pour manipulation facile
-    $toDate = Carbon::parse($book_data['check_in']);
-    $fromDate = Carbon::parse($book_data['check_out']);
-
-    // Calcule le nombre total de nuits entre check-in et check-out
-    $total_nights = $toDate->diffInDays($fromDate);
-
-    // Récupère l'objet Room correspondant à l'id de la réservation
-    $room = Room::find($book_data['room_id']);
-
-    // Calcul du subtotal: prix d'une chambre * nombre de nuits * nombre de chambres
-    $subtotal = $room->price * $total_nights * $book_data['number_of_rooms'];
-
-    // Calcul du montant de la remise en fonction du pourcentage défini sur la chambre
-    $discount = ($room->discount / 100) * $subtotal;
-
-    // Calcul du total après application de la remise
-    $total_price = $subtotal - $discount;
-
-    // Génère un code unique pour la réservation
-    $code = rand(000000000, 999999999);
-
-    // Initialisation des variables pour le paiement
-    $payment_status = 0;        // 0 = non payé, 1 = payé
-    $transaction_id = null;     // ID de transaction (Stripe)
-
-    // Si le client a choisi Stripe comme moyen de paiement
-    if ($request->payment_method === 'Stripe') {
-        try {
-            // Configure la clé secrète Stripe côté backend
-            Stripe::setApiKey(config('services.stripe.secret'));
-
-            // Crée le paiement Stripe (montant en centimes)
-            $s_pay = Charge::create([
-                'amount' => intval($total_price * 100),
-                'currency' => 'usd',
-                'source' => $request->stripeToken,
-                'description' => 'Payment For Booking. Booking No ' . $code,
-            ]);
-
-            // Vérifie si le paiement a réussi
-            if ($s_pay->status === 'succeeded') {
-                $payment_status = 1;       // paiement réussi
-                $transaction_id = $s_pay->id; // récupère l'ID unique de Stripe
-            } else {
-              return redirect()->back()->with([
-                'message' => 'Payment failed',
-                'alert-type' => 'error'
-            ]);
-        }
-        } catch (\Exception $e) {
-            // En cas d'erreur Stripe (carte refusée, token invalide, etc.)
-            $notification = [
-                'message' => $e->getMessage(),
-                'alert-type' => 'error'
-            ];
-            return redirect('/')->with($notification);
-        }
-    }
-
-    // Création et insertion d'une nouvelle réservation dans la table bookings
-    $data = new Booking();
-    $data->rooms_id = $room->id;                      // ID de la chambre
-    $data->user_id = Auth::user()->id;               // ID de l'utilisateur connecté
-    $data->check_in = $toDate->format('Y-m-d');      // Check-in formaté
-    $data->check_out = $fromDate->format('Y-m-d');   // Check-out formaté
-    $data->persion = $book_data['persion'];          // Nombre de personnes
-    $data->number_of_rooms = $book_data['number_of_rooms']; // Nombre de chambres réservées
-    $data->total_night = $total_nights;             // Nombre de nuits
-    $data->actual_price = $room->price;             // Prix par chambre
-    $data->subtotal = $subtotal;                    // Sous-total (avant remise)
-    $data->discount = $discount;                    // Remise
-    $data->total_price = $total_price;             // Total final
-    $data->payment_method = $request->payment_method; // Mode de paiement choisi
-    $data->transaction_id = $transaction_id;        // ID de transaction (Stripe)
-    $data->payment_status = $payment_status;        // Statut du paiement
-    $data->name = $request->name;                   // Nom du client
-    $data->email = $request->email;                 // Email du client
-    $data->phone = $request->phone;                 // Téléphone
-    $data->country = $request->country;             // Pays
-    $data->state = $request->state;                 // Etat / région
-    $data->zip_code = $request->zip_code;           // Code postal
-    $data->address = $request->address;             // Adresse complète
-    $data->code = $code;                             // Code unique de réservation
-    $data->status = 0;                               // 0 = non confirmé / 1 = confirmé
-    $data->created_at = Carbon::now();              // Date de création
-    \Log::info('Stripe transaction ID: '.$transaction_id);
-    $data->save();                                  // Enregistre la réservation en base
-
-    // Enregistrement des dates réservées dans room_booked_dates
-    $sdate = $toDate;                               // Date de départ
-    $edate = $fromDate->subDay();                   // Dernière nuit (ne pas compter le check-out)
-    $d_period = CarbonPeriod::create($sdate, $edate); // Période de réservation
-
-    foreach ($d_period as $period) {
-        $booked_dates = new RoomBookedDate();
-        $booked_dates->booking_id = $data->id;      // Lien avec la réservation
-        $booked_dates->room_id = $room->id;        // ID de la chambre
-        $booked_dates->book_date = $period->format('Y-m-d'); // Date réservée
-        $booked_dates->save();                      // Enregistre en base
-    }
-
-    // Supprime les données de session après la réservation
-    Session::forget('book_date');
-
-    // Notification succès
-    $notification = [
-       'message' => 'Booking Added Successfully',
-       'alert-type' => 'success'
-    ]; 
+        $user = User::where('role', 'admin')->get();
    
-    // Redirection vers la page d'accueil avec notification
-    return redirect('/')->with($notification);
-  }
+        // Validation des champs obligatoires côté serveur
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'country' => 'required',
+            'phone' => 'required',
+            'address' => 'required',    
+            'state' => 'required',
+            'zip_code' => 'required',
+            'payment_method' => 'required', 
+        ]);
+
+        // Récupère les données de réservation stockées en session
+        $book_data = Session::get('book_date'); 
+
+        // Convertit les dates de check-in et check-out en objets Carbon pour manipulation facile
+        $toDate = Carbon::parse($book_data['check_in']);
+        $fromDate = Carbon::parse($book_data['check_out']);
+
+        // Calcule le nombre total de nuits entre check-in et check-out
+        $total_nights = $toDate->diffInDays($fromDate);
+
+        // Récupère l'objet Room correspondant à l'id de la réservation
+        $room = Room::find($book_data['room_id']);
+
+        // Calcul du subtotal: prix d'une chambre * nombre de nuits * nombre de chambres
+        $subtotal = $room->price * $total_nights * $book_data['number_of_rooms'];
+
+        // Calcul du montant de la remise en fonction du pourcentage défini sur la chambre
+        $discount = ($room->discount / 100) * $subtotal;
+
+        // Calcul du total après application de la remise
+        $total_price = $subtotal - $discount;
+
+        // Génère un code unique pour la réservation
+        $code = rand(000000000, 999999999);
+
+        // Initialisation des variables pour le paiement
+        $payment_status = 0;        // 0 = non payé, 1 = payé
+        $transaction_id = null;     // ID de transaction (Stripe)
+
+        // Si le client a choisi Stripe comme moyen de paiement
+        if ($request->payment_method === 'Stripe') {
+            try {
+                // Configure la clé secrète Stripe côté backend
+                Stripe::setApiKey(config('services.stripe.secret'));
+
+                // Crée le paiement Stripe (montant en centimes)
+                $s_pay = Charge::create([
+                    'amount' => intval($total_price * 100),
+                    'currency' => 'usd',
+                    'source' => $request->stripeToken,
+                    'description' => 'Payment For Booking. Booking No ' . $code,
+                ]);
+
+                // Vérifie si le paiement a réussi
+                if ($s_pay->status === 'succeeded') {
+                    $payment_status = 1;       // paiement réussi
+                    $transaction_id = $s_pay->id; // récupère l'ID unique de Stripe
+                } else {
+                return redirect()->back()->with([
+                    'message' => 'Payment failed',
+                    'alert-type' => 'error'
+                ]);
+            }
+            } catch (\Exception $e) {
+                // En cas d'erreur Stripe (carte refusée, token invalide, etc.)
+                $notification = [
+                    'message' => $e->getMessage(),
+                    'alert-type' => 'error'
+                ];
+                return redirect('/')->with($notification);
+            }
+        }
+
+        // Création et insertion d'une nouvelle réservation dans la table bookings
+        $data = new Booking();
+        $data->rooms_id = $room->id;                      // ID de la chambre
+        $data->user_id = Auth::user()->id;               // ID de l'utilisateur connecté
+        $data->check_in = $toDate->format('Y-m-d');      // Check-in formaté
+        $data->check_out = $fromDate->format('Y-m-d');   // Check-out formaté
+        $data->persion = $book_data['persion'];          // Nombre de personnes
+        $data->number_of_rooms = $book_data['number_of_rooms']; // Nombre de chambres réservées
+        $data->total_night = $total_nights;             // Nombre de nuits
+        $data->actual_price = $room->price;             // Prix par chambre
+        $data->subtotal = $subtotal;                    // Sous-total (avant remise)
+        $data->discount = $discount;                    // Remise
+        $data->total_price = $total_price;             // Total final
+        $data->payment_method = $request->payment_method; // Mode de paiement choisi
+        $data->transaction_id = $transaction_id;        // ID de transaction (Stripe)
+        $data->payment_status = $payment_status;        // Statut du paiement
+        $data->name = $request->name;                   // Nom du client
+        $data->email = $request->email;                 // Email du client
+        $data->phone = $request->phone;                 // Téléphone
+        $data->country = $request->country;             // Pays
+        $data->state = $request->state;                 // Etat / région
+        $data->zip_code = $request->zip_code;           // Code postal
+        $data->address = $request->address;             // Adresse complète
+        $data->code = $code;                             // Code unique de réservation
+        $data->status = 0;                               // 0 = non confirmé / 1 = confirmé
+        $data->created_at = Carbon::now();              // Date de création
+        \Log::info('Stripe transaction ID: '.$transaction_id);
+        $data->save();                                  // Enregistre la réservation en base
+
+        // Enregistrement des dates réservées dans room_booked_dates
+        $sdate = $toDate;                               // Date de départ
+        $edate = $fromDate->subDay();                   // Dernière nuit (ne pas compter le check-out)
+        $d_period = CarbonPeriod::create($sdate, $edate); // Période de réservation
+
+        foreach ($d_period as $period) {
+            $booked_dates = new RoomBookedDate();
+            $booked_dates->booking_id = $data->id;      // Lien avec la réservation
+            $booked_dates->room_id = $room->id;        // ID de la chambre
+            $booked_dates->book_date = $period->format('Y-m-d'); // Date réservée
+            $booked_dates->save();                      // Enregistre en base
+        }
+
+        // Supprime les données de session après la réservation
+        Session::forget('book_date');
+
+        // Notification succès
+        $notification = [
+        'message' => 'Booking Added Successfully',
+        'alert-type' => 'success'
+        ]; 
+
+        //Notification 
+        Notification::send($user, new BookingComplete($request->name));
+    
+        // Redirection vers la page d'accueil avec notification
+        return redirect('/')->with($notification);
+    }
 
     public function BookingList()
     {
