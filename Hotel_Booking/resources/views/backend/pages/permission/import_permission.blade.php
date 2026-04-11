@@ -49,7 +49,7 @@
 
                             <form
                                 class="row g-3"
-                                action="{{ route('store.permission') }}"
+                                action="{{ route('import') }}"
                                 method="post"
                                 enctype="multipart/form-data"
                             >
