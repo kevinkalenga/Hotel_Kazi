@@ -15,6 +15,7 @@ use App\Http\Controllers\Backend\CommentController;
 use App\Http\Controllers\Backend\ReportController;
 use App\Http\Controllers\Backend\GalleryController;
 use App\Http\Controllers\Backend\ContactController;
+use App\Http\Controllers\Backend\RoleController;
 
 use App\Http\Controllers\Frontend\FrontendRoomController;
 use App\Http\Controllers\Frontend\BookingController;
@@ -257,6 +258,14 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
       // contact message admin route  
       Route::get('/contact/message', 'AdminContactMessage')->name('contact.message');
        
+    });
+
+
+    Route::controller(RoleController::class)->group(function(){
+
+        Route::get('/all/permission', 'AllPermission')->name('all.permission');
+    
+      
     });
 
 
