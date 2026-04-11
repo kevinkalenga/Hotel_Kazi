@@ -262,6 +262,15 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
 
 });
 
+/// Notification All Route 
+Route::controller(BookingController::class)->group(function(){
+ 
+    Route::post('/mark-notification-as-read/{notification}', 'MarkAsRead');
+   
+ 
+});
+
+
 
 
 
