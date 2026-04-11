@@ -272,6 +272,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
 
         // Others permission routes 
          Route::get('/import/permission', 'ImportPermission')->name('import.permission');
+         Route::get('/export', 'Export')->name('export');
       
     });
 
