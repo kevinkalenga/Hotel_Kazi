@@ -44,7 +44,7 @@
                         <div class="card-body p-4">
 
                             <form class="row g-3"
-                                  action="{{ route('store.gallery') }}"
+                                  action="{{ route('store.permission') }}"
                                   method="post"
                                   enctype="multipart/form-data">
 
@@ -65,7 +65,7 @@
                                         Permission Group
                                     </label>
 
-                                    <select class="form-select mb-3"
+                                    <select name="group_name" class="form-select mb-3"
                                             aria-label="Default select example">
 
                                         <option selected="">

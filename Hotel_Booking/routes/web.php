@@ -265,7 +265,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
 
         Route::get('/all/permission', 'AllPermission')->name('all.permission');
         Route::get('/add/permission', 'AddPermission')->name('add.permission');
-    
+        Route::post('/store/permission', 'StorePermission')->name('store.permission');
       
     });
 
