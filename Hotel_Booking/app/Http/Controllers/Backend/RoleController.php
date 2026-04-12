@@ -105,4 +105,36 @@ class RoleController extends Controller
 
     }
 
+
+    /////////// All Roles Mehtod //////////////////////
+
+    public function AllRoles(){
+
+        $roles = Role::latest()->get();
+        return view('backend.pages.roles.all_roles',compact('roles'));
+
+    }
+
+
+    public function AddRoles(){
+        return view('backend.pages.roles.add_roles');
+    }
+
+    public function StoreRoles(Request $request){
+        
+        Role::create([
+            'name' => $request->name,
+        ]);
+
+        $notification = array(
+            'message' => 'Role Created Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('all.roles')->with($notification);  
+
+    }
+
+
+
 }
