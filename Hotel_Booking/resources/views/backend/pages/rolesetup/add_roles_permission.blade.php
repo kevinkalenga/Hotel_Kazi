@@ -86,6 +86,43 @@
                                     </label>
                                 </div>
 
+                                <hr> 
+                              @foreach ($permission_groups as $group) 
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-check">
+                                          <input class="form-check-input"
+                                                 type="checkbox"
+                                                 value=""
+                                                 id="flexCheckDefault">
+
+                                          <label class="form-check-label"
+                                                 for="flexCheckDefault">
+                                              {{ $group->group_name }}
+                                          </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-9">
+
+                                        <div class="form-check">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   value=""
+                                                   id="flexCheckDefault">
+
+                                            <label class="form-check-label"
+                                                   for="flexCheckDefault">
+                                                Permission All
+                                            </label>
+                                        </div>
+                                
+                                
+                                     </div>
+                                </div>
+                               @endforeach  
+                                
+                                
                                 <div class="col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
 

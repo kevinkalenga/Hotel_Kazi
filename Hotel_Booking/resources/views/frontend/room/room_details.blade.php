@@ -33,14 +33,16 @@
                         <div class="room-details-side">
                             <div class="side-bar-form">
                                 <h3>Booking Sheet </h3>
-                                <form>
+                                <form  method="get" action="{{route('booking.search')}}">
+                                   
+                                     <input type="hidden" name="room_id" value="{{ $roomDetails->id }}">
                                     <div class="row align-items-center">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Check in</label>
                                                 <div class="input-group">
                                                     <!-- id="datetimepicker" -->
-                                                    <input type="text" class="form-control dt_picker" placeholder="09/29/2020">
+                                                    <input type="text" name="check_in" class="form-control dt_picker" placeholder="yyy-mm-dd" required>
                                                     <span class="input-group-addon"></span>
                                                 </div>
                                                 <i class='bx bxs-calendar'></i>
@@ -52,7 +54,7 @@
                                                 <label>Check Out</label>
                                                 <div class="input-group">
                                                     <!-- id="datetimepicker-check" -->
-                                                    <input type="text" class="form-control dt_picker" placeholder="09/29/2020">
+                                                    <input type="text" name="check_out" class="form-control dt_picker" placeholder="yyy-mm-dd" required>
                                                     <span class="input-group-addon"></span>
                                                 </div>
                                                 <i class='bx bxs-calendar'></i>
