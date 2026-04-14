@@ -105,20 +105,25 @@
                                     </div>
                                     <div class="col-9">
 
-                                        <div class="form-check">
-                                            <input class="form-check-input"
+                                        @php
+                                            $permissions = App\Models\User::getpermissionByGroupName($group->group_name)
+                                        @endphp
+                                        @foreach ($permissions as $permission) 
+                                          <div class="form-check">
+                                             <input class="form-check-input"
                                                    type="checkbox"
-                                                   value=""
-                                                   id="flexCheckDefault">
+                                                   value="{{ $permission->id }}"
+                                                   name="permission[]"
+                                                   id="flexCheckDefault{{ $permission->id }}">
 
-                                            <label class="form-check-label"
-                                                   for="flexCheckDefault">
-                                                Permission All
-                                            </label>
-                                        </div>
-                                
-                                
-                                     </div>
+                                             <label class="form-check-label"
+                                                   for="flexCheckDefault{{ $permission->id }}">
+                                                {{ $permission->name }}
+                                             </label>
+                                          </div>
+                                        @endforeach
+                                        <br>
+                                    </div>
                                 </div>
                                @endforeach  
                                 
