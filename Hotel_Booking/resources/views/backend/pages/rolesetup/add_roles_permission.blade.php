@@ -4,6 +4,12 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+ <style>
+    .form-check-label{
+        text-transform: capitalize;
+    }
+ </style>
+
 <div class="page-content">
 
     <!-- Breadcrumb -->
@@ -78,10 +84,10 @@
                                     <input class="form-check-input"
                                            type="checkbox"
                                            value=""
-                                           id="flexCheckDefault">
+                                           id="CheckDefaultmain">
 
                                     <label class="form-check-label"
-                                           for="flexCheckDefault">
+                                           for="CheckDefaultmain">
                                         Permission All
                                     </label>
                                 </div>
@@ -152,5 +158,16 @@
     </div>
 
 </div>
+
+
+ <script>
+    $('#CheckDefaultmain').click(function(){
+        if ($(this).is(':checked')) {
+           $('input[ type= checkbox]').prop('checked',true); 
+        }else{
+            $('input[ type= checkbox]').prop('checked',false); 
+        }
+    });
+ </script>
 
 @endsection
