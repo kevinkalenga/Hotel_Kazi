@@ -52,11 +52,13 @@
                         <div class="card-body p-4">
 
                             <form class="row g-3"
-                                  action="{{ route('role.permission.store') }}"
+                                  action="{{ route('admin.roles.update', $role->id) }}"
                                   method="post"
                                   enctype="multipart/form-data">
 
                                 @csrf
+
+                               
 
                                 <div class="col-md-6">
                                     <label for="input1" class="form-label">
@@ -104,12 +106,12 @@
                                       
                                         @foreach ($permissions as $permission) 
                                           <div class="form-check">
-                                             <input class="form-check-input"
-                                                   type="checkbox"
-                                                   value="{{ $permission->id }}"
-                                                   name="permission[]"
-                                                   id="checkDefault{{ $permission->id }}" {{$role->hasPermissionTo($permission->name) ? 'checked' : ''}}>
-
+                                               <input class="form-check-input"
+                                                    type="checkbox"
+                                                    value="{{ $permission->name }}"
+                                                    name="permission[]"
+                                                    id="checkDefault{{ $permission->id }}"
+                                                    {{$role->hasPermissionTo($permission->name) ? 'checked' : ''}}>
                                              <label class="form-check-label"
                                                    for="checkDefault{{ $permission->id }}">
                                                 {{ $permission->name }}
@@ -127,7 +129,7 @@
 
                                         <button type="submit"
                                                 class="btn btn-primary px-4">
-                                            Save Changes
+                                            Update Changes
                                         </button>
 
                                     </div>
