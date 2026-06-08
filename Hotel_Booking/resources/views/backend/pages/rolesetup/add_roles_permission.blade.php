@@ -52,7 +52,7 @@
                         <div class="card-body p-4">
 
                             <form class="row g-3"
-                                  action="{{ route('store.roles') }}"
+                                  action="{{ route('role.permission.store') }}"
                                   method="post"
                                   enctype="multipart/form-data">
 
