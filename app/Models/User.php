@@ -45,31 +45,59 @@ class User extends Authenticatable
         ];
     }
 
+
+
     public static function getpermissionGroups(){
+    return DB::table('permissions')
+        ->select('group_name')
+        ->groupBy('group_name')
+        ->get();
+}
 
-        $permission_groups = DB::table('permissions')->select('group_name')->groupBy('group_name')->get();
-        return $permission_groups;
+public static function getpermissionByGroupName($group_name){
+    return DB::table('permissions')
+        ->select('name','id')
+        ->where('group_name',$group_name)
+        ->get();
+}
 
-    } 
+public static function roleHasPermissions($role, $permissions) {
+    $hasPermission = true;
 
-
-     public static function getpermissionByGroupName($group_name){
-
-        $permissions = DB::table('permissions')
-                            ->select('name','id')
-                            ->where('group_name',$group_name)
-                            ->get();
-            return $permissions;
-
-    }
-
-    public static function roleHasPermissions($role, $permissions) {
-        $hasPemission = true;
-
-        foreach($permissions as $permission) {
-            if(!$role->hasPermissionTo($permission->name)) {
-                $hasPemission = false;
-            }
+    foreach($permissions as $permission) {
+        if(!$role->hasPermissionTo($permission->name)) {
+            $hasPermission = false;
         }
     }
+
+    return $hasPermission; // IMPORTANT FIX
+}
+
+    // public static function getpermissionGroups(){
+
+    //     $permission_groups = DB::table('permissions')->select('group_name')->groupBy('group_name')->get();
+    //     return $permission_groups;
+
+    // } 
+
+
+    //  public static function getpermissionByGroupName($group_name){
+
+    //     $permissions = DB::table('permissions')
+    //                         ->select('name','id')
+    //                         ->where('group_name',$group_name)
+    //                         ->get();
+    //         return $permissions;
+
+    // }
+
+    // public static function roleHasPermissions($role, $permissions) {
+    //     $hasPemission = true;
+
+    //     foreach($permissions as $permission) {
+    //         if(!$role->hasPermissionTo($permission->name)) {
+    //             $hasPemission = false;
+    //         }
+    //     }
+    // }
 }

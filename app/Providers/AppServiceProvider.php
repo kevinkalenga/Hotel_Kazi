@@ -18,30 +18,59 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
+    // public function boot(): void
+    // {
         
-         if (\Schema::hasTable('smtp_settings')) {
-           $smtpsetting = SmtpSetting::first();
+    //      if (\Schema::hasTable('smtp_settings')) {
+    //        $smtpsetting = SmtpSetting::first();
 
-           if ($smtpsetting) {
-              $data = [
-                'driver' => $smtpsetting->mailer, 
-                'host' => $smtpsetting->host,
-                'port' => $smtpsetting->port,
-                'username' => $smtpsetting->username,
-                'password' => $smtpsetting->password,
-                'from' => [
-                    'address' => $smtpsetting->from_address,
-                    'name' => 'Easyhotel'
-                ]  
-              ];
-              Config::set('mail',$data);
-           }
+    //        if ($smtpsetting) {
+    //           $data = [
+    //             'driver' => $smtpsetting->mailer, 
+    //             'host' => $smtpsetting->host,
+    //             'port' => $smtpsetting->port,
+    //             'username' => $smtpsetting->username,
+    //             'password' => $smtpsetting->password,
+    //             'from' => [
+    //                 'address' => $smtpsetting->from_address,
+    //                 'name' => 'Easyhotel'
+    //             ]  
+    //           ];
+    //           Config::set('mail',$data);
+    //        }
 
+    //     }
+    
+    
+    
+    // }
+
+     public function boot(): void
+{
+    try {
+        if (\Schema::hasTable('smtp_settings')) {
+
+            $smtpsetting = SmtpSetting::first();
+
+            if ($smtpsetting) {
+                $data = [
+                    'driver' => $smtpsetting->mailer,
+                    'host' => $smtpsetting->host,
+                    'port' => $smtpsetting->port,
+                    'username' => $smtpsetting->username,
+                    'password' => $smtpsetting->password,
+                    'from' => [
+                        'address' => $smtpsetting->from_address,
+                        'name' => 'Easyhotel'
+                    ]
+                ];
+
+                Config::set('mail', $data);
+            }
         }
-    
-    
-    
+    } catch (\Throwable $e) {
+        // IMPORTANT: ne jamais casser l'app en production
+        // tu peux logger si besoin
     }
+}
 }
