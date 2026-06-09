@@ -239,6 +239,20 @@ class RoleController extends Controller
         
     }
 
+    public function AdminDeleteRoles($id)
+    {
+        $role = Role::findOrFail($id);
+
+        $role->delete();
+
+         $notification = array(
+            'message' => 'Role Permission Delete Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification); 
+    }
+
 
 
 }
