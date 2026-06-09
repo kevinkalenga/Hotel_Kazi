@@ -213,6 +213,24 @@
 						
 					</ul>
 				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+						</div>
+						<div class="menu-title">Manage Admin User</div>
+					</a>
+					<ul>
+						
+						<li> 
+							<a href="{{route('all.admin')}}"><i class='bx bx-radio-circle'></i>All Admin</a>
+						</li>
+						<li> 
+							<a href="{{route('all.roles')}}"><i class='bx bx-radio-circle'></i>Add Admin</a>
+						</li>
+						
+						
+					</ul>
+				</li>
 				
 				
 				<li>
