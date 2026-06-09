@@ -40,4 +40,10 @@ RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 
+RUN php artisan config:clear || true \
+ && php artisan cache:clear || true \
+ && php artisan route:clear || true \
+ && php artisan view:clear || true \
+ && php artisan migrate --force || true
+
 CMD php artisan serve --host=0.0.0.0 --port=8000
