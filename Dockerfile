@@ -1,22 +1,23 @@
-FROM php:8.2-cli
+FROM php:8.3-cli
 
 WORKDIR /app
 
-# Installer dépendances système + extensions PHP
+# Install system dependencies + GD (IMPORTANT)
 RUN apt-get update && apt-get install -y \
-    git unzip zip curl libzip-dev libpng-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql zip mbstring
+    git unzip zip curl libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql zip mbstring gd
 
-# Installer Composer
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copier projet
+# Copy project
 COPY . .
 
-# Installer dépendances Laravel
+# Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Permissions (IMPORTANT pour Laravel)
+# Permissions
 RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
