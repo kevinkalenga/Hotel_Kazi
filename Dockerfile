@@ -16,15 +16,14 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy composer files first (better Docker cache)
-COPY composer.json composer.lock ./
-
-# Allow Composer plugins and install dependencies
-ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Copy the rest of the application
+# Copy application files
 COPY . .
+
+# Allow Composer plugins
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Laravel permissions
 RUN chmod -R 775 storage bootstrap/cache
