@@ -5,7 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\SmtpSetting;
 use Config;
+use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
+
 {
     /**
      * Register any application services.
@@ -45,32 +48,30 @@ class AppServiceProvider extends ServiceProvider
     
     // }
 
-     public function boot(): void
-{
-    try {
-        if (\Schema::hasTable('smtp_settings')) {
+     
+        public function boot(): void
+    {
+        try {
+            if (Schema::hasTable('smtp_settings')) {
 
-            $smtpsetting = SmtpSetting::first();
+                $smtpsetting = SmtpSetting::first();
 
-            if ($smtpsetting) {
-                $data = [
-                    'driver' => $smtpsetting->mailer,
-                    'host' => $smtpsetting->host,
-                    'port' => $smtpsetting->port,
-                    'username' => $smtpsetting->username,
-                    'password' => $smtpsetting->password,
-                    'from' => [
-                        'address' => $smtpsetting->from_address,
-                        'name' => 'Easyhotel'
-                    ]
-                ];
-
-                Config::set('mail', $data);
+                if ($smtpsetting) {
+                    Config::set('mail', [
+                        'driver' => $smtpsetting->mailer,
+                        'host' => $smtpsetting->host,
+                        'port' => $smtpsetting->port,
+                        'username' => $smtpsetting->username,
+                        'password' => $smtpsetting->password,
+                        'from' => [
+                            'address' => $smtpsetting->from_address,
+                            'name' => 'Easyhotel'
+                        ]
+                    ]);
+                }
             }
+        } catch (\Throwable $e) {
+            // ne jamais crash l'app
         }
-    } catch (\Throwable $e) {
-        // IMPORTANT: ne jamais casser l'app en production
-        // tu peux logger si besoin
     }
-}
 }
