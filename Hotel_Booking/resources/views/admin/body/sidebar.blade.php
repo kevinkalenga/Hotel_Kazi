@@ -225,7 +225,7 @@
 							<a href="{{route('all.admin')}}"><i class='bx bx-radio-circle'></i>All Admin</a>
 						</li>
 						<li> 
-							<a href="{{route('all.roles')}}"><i class='bx bx-radio-circle'></i>Add Admin</a>
+							<a href="{{route('add.admin')}}"><i class='bx bx-radio-circle'></i>Add Admin</a>
 						</li>
 						
 						

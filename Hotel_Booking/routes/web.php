@@ -307,6 +307,7 @@ Route::middleware(['auth', 'adminRole:admin'])->group(function () {
     // Admin User All Route 
    Route::controller(AdminController::class)->group(function(){ 
       Route::get('/all/admin', 'AllAdmin')->name('all.admin');
+      Route::get('/add/admin', 'AddAdmin')->name('add.admin');
      
      
     });

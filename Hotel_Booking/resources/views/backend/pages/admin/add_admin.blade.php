@@ -10,7 +10,7 @@
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
 
         <div class="breadcrumb-title pe-3">
-            Add Permission
+            Add Admin User
         </div>
 
         <div class="ps-3">
@@ -24,7 +24,7 @@
                     </li>
 
                     <li class="breadcrumb-item active" aria-current="page">
-                        Add Permission
+                        Add Admin
                     </li>
 
                 </ol>
@@ -52,28 +52,64 @@
 
                                 <div class="col-md-6">
                                     <label for="input1" class="form-label">
-                                        Permission Name
+                                        Admin User Name
                                     </label>
 
                                     <input type="text"
                                            name="name"
                                            class="form-control">
                                 </div>
+                                <div class="col-md-6">
+                                    <label for="input1" class="form-label">
+                                        Admin User Email
+                                    </label>
+
+                                    <input type="email"
+                                           name="email"
+                                           class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="input1" class="form-label">
+                                        Admin User Phone
+                                    </label>
+
+                                    <input type="text"
+                                           name="phone"
+                                           class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="input1" class="form-label">
+                                        Admin User Address
+                                    </label>
+
+                                    <input type="text"
+                                           name="address"
+                                           class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="input1" class="form-label">
+                                        Admin Password
+                                    </label>
+
+                                    <input type="password"
+                                           name="password"
+                                           class="form-control">
+                                </div>
 
                                 <div class="col-md-6">
                                     <label for="input1" class="form-label">
-                                        Permission Group
+                                        Roles
                                     </label>
 
-                                    <select name="group_name" class="form-select mb-3"
+                                    <select name="roles" class="form-select mb-3"
                                             aria-label="Default select example">
 
                                         <option selected="">
                                             Select Role
                                         </option>
-                                         @foreach($roles as $role)
+                                          @foreach($roles as $role)  
                                            <option value="{{$role->id}}">{{$role->name}}</option>
-                                         @endforeach
+                                          @endforeach
 
                                     </select>
                                 </div>
