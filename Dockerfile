@@ -19,20 +19,20 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy application files
 COPY . .
 
-# Create SQLite database file (fix Laravel crash during composer)
+# Create SQLite database file (safe fix)
 RUN mkdir -p database && touch database/database.sqlite
 
 # Allow Composer plugins
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Install dependencies (no-scripts avoids Laravel boot during build)
+# Install dependencies (avoid boot issues)
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction \
     --no-scripts
 
-# Now safely run Laravel optimization
+# Optimize Laravel (safe)
 RUN php artisan package:discover --ansi || true
 
 # Permissions
@@ -40,10 +40,5 @@ RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 
-RUN php artisan config:clear || true \
- && php artisan cache:clear || true \
- && php artisan route:clear || true \
- && php artisan view:clear || true \
-
-
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# IMPORTANT Railway port
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
