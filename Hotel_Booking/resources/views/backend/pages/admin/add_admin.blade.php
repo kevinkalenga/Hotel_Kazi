@@ -44,7 +44,7 @@
                         <div class="card-body p-4">
 
                             <form class="row g-3"
-                                  action="{{ route('store.permission') }}"
+                                  action="{{ route('store.admin') }}"
                                   method="post"
                                   enctype="multipart/form-data">
 
@@ -108,7 +108,7 @@
                                             Select Role
                                         </option>
                                           @foreach($roles as $role)  
-                                           <option value="{{$role->id}}">{{$role->name}}</option>
+                                           <option value="{{$role->name}}">{{$role->name}}</option>
                                           @endforeach
 
                                     </select>

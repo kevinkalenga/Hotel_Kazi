@@ -69,11 +69,22 @@
                                             aria-label="Default select example">
 
                                         <option selected="">
-                                            Select Role
+                                            Select Group
                                         </option>
-                                         @foreach($roles as $role)
-                                           <option value="{{$role->id}}">{{$role->name}}</option>
-                                         @endforeach
+
+                                        <option value="Team">Team</option>
+                                        <option value="Book Area">Book Area</option>
+                                        <option value="Manage Room">Manage Room</option>
+                                        <option value="Booking">Booking</option>
+                                        <option value="RoomList">RoomList</option>
+                                        <option value="Setting">Setting</option>
+                                        <option value="Tesimonial">Testimonial</option>
+                                        <option value="Blog">Blog</option>
+                                        <option value="Manage Comment">Manage Comment</option>
+                                        <option value="Booking Report">Booking Report</option>
+                                        <option value="Hotel Gallery">Hotel Gallery</option>
+                                        <option value="Contact Message">Contact Message</option>
+                                        <option value="Role and Permission">Role and Permission</option>
 
                                     </select>
                                 </div>
