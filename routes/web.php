@@ -24,9 +24,11 @@ use App\Http\Controllers\Frontend\BookingController;
 //     return view('welcome');
 // });
 
+Route::get('/', function () {
+    return "HOME OK";
+});
 
-
-Route::get('/', [UserController::class, 'index'])->name('index');
+// Route::get('/', [UserController::class, 'index'])->name('index');
 
 Route::get('/dashboard', function () {
     return view('frontend.dashboard.user_dashboard');
