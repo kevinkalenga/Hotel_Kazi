@@ -56,16 +56,16 @@
         <!-- PreLoader End -->
 
         <!-- Top Header Start -->
-          {{--@include('frontend.body.header')--}}
+          @include('frontend.body.header')
         <!-- Top Header End -->
 
         <!-- Start Navbar Area -->
-           {{--@include('frontend.body.navbar')--}}
+           @include('frontend.body.navbar')
         <!-- End Navbar Area -->
 
           @yield('main')
         <!-- Footer Area -->
-            {{--@include('frontend.body.footer')--}}
+            @include('frontend.body.footer')
         <!-- Footer Area End -->
 
 
