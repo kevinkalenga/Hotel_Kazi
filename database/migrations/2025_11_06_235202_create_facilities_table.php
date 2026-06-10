@@ -8,23 +8,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
+        Schema::create('facilities', function (Blueprint $table) {
+            $table->id();
 
-            if (!Schema::hasColumn('facilities', 'rooms_id')) {
-                $table->unsignedBigInteger('rooms_id');
-            }
+            $table->unsignedBigInteger('rooms_id');
 
             $table->foreign('rooms_id')
                 ->references('id')
                 ->on('rooms')
                 ->onDelete('cascade');
+
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
-            $table->dropForeign(['rooms_id']);
-        });
+        Schema::dropIfExists('facilities');
     }
 };
