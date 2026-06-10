@@ -49,29 +49,30 @@ class AppServiceProvider extends ServiceProvider
     // }
 
      
-        public function boot(): void
-    {
-        try {
-            if (Schema::hasTable('smtp_settings')) {
+    public function boot(): void
+{
+    try {
+        if (class_exists('Illuminate\Support\Facades\Schema') &&
+            \Illuminate\Support\Facades\Schema::hasTable('smtp_settings')) {
 
-                $smtpsetting = SmtpSetting::first();
+            $smtpsetting = \App\Models\SmtpSetting::first();
 
-                if ($smtpsetting) {
-                    Config::set('mail', [
-                        'driver' => $smtpsetting->mailer,
-                        'host' => $smtpsetting->host,
-                        'port' => $smtpsetting->port,
-                        'username' => $smtpsetting->username,
-                        'password' => $smtpsetting->password,
-                        'from' => [
-                            'address' => $smtpsetting->from_address,
-                            'name' => 'Easyhotel'
-                        ]
-                    ]);
-                }
+            if ($smtpsetting) {
+                \Config::set('mail', [
+                    'driver' => $smtpsetting->mailer,
+                    'host' => $smtpsetting->host,
+                    'port' => $smtpsetting->port,
+                    'username' => $smtpsetting->username,
+                    'password' => $smtpsetting->password,
+                    'from' => [
+                        'address' => $smtpsetting->from_address,
+                        'name' => 'Easyhotel'
+                    ]
+                ]);
             }
-        } catch (\Throwable $e) {
-            // ne jamais crash l'app
         }
+    } catch (\Throwable $e) {
+        // ne jamais casser l'app
     }
+}
 }

@@ -4,6 +4,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     git unzip zip curl \
+    nodejs npm \
     libzip-dev \
     libpng-dev \
     libjpeg-dev \
@@ -16,17 +17,16 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN mkdir -p database && touch database/database.sqlite
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-ENV COMPOSER_ALLOW_SUPERUSER=1
+# Install + build frontend (IMPORTANT POUR LARAVEL 12)
+RUN npm install
+RUN npm run build
 
-RUN composer install \
-    --no-dev \
-    --optimize-autoloader \
-    --no-interaction \
-    --no-scripts
-
-RUN php artisan package:discover --ansi || true
+# Laravel cache (sécurisé prod)
+RUN php artisan config:clear
+RUN php artisan config:cache
 
 RUN chmod -R 775 storage bootstrap/cache
 
