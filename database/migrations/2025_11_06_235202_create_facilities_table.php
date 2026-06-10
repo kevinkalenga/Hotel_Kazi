@@ -9,12 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('facilities', function (Blueprint $table) {
-            $table->unsignedBigInteger('rooms_id')->change();
+
+            if (!Schema::hasColumn('facilities', 'rooms_id')) {
+                $table->unsignedBigInteger('rooms_id');
+            }
 
             $table->foreign('rooms_id')
-                  ->references('id')
-                  ->on('rooms')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('rooms')
+                ->onDelete('cascade');
         });
     }
 
@@ -25,4 +28,3 @@ return new class extends Migration
         });
     }
 };
-
