@@ -20,12 +20,21 @@
                                     <p>No book area data available</p>
                                 @endif
                                 
-                                <h2>{{$bookArea->main_title}}</h2>
-                                <p>
-                                    {!! $bookArea->short_desc !!}
-                                </p>
+                                @if($bookArea)
+                                    <span class="sp-color">{{ $bookArea->short_title }}</span>
+
+                                    <h2>{{ $bookArea->main_title }}</h2>
+
+                                    <p>{!! $bookArea->short_desc !!}</p>
+
+                                    <a href="{{ $bookArea->link_url }}" class="default-btn btn-bg-three">
+                                        Quick Booking
+                                    </a>
+                                @else
+                                    <p>No book area data available</p>
+                                @endif
                             </div>
-                            <a href="{{$bookArea->link_url}}" class="default-btn btn-bg-three">Quick Booking</a>
+                            
                         </div>
                     </div>
 
