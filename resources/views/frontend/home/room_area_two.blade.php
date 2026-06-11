@@ -12,7 +12,14 @@
                     <div class="col-lg-6">
                         <div class="book-content-two">
                             <div class="section-title">
-                                <span class="sp-color">{{$bookArea->short_title}}</span>
+                                @if($bookArea)
+                                    <span class="sp-color">{{ $bookArea->short_title }}</span>
+                                    <h2>{{ $bookArea->main_title }}</h2>
+                                    <p>{!! $bookArea->short_desc !!}</p>
+                                @else
+                                    <p>No book area data available</p>
+                                @endif
+                                
                                 <h2>{{$bookArea->main_title}}</h2>
                                 <p>
                                     {!! $bookArea->short_desc !!}
