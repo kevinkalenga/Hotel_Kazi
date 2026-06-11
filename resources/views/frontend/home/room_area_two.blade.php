@@ -37,12 +37,15 @@
                             
                         </div>
                     </div>
-
-                    <div class="col-lg-6">
-                        <div class="book-img-2">
-                            <img src="{{asset($bookArea->image)}}" alt="Images">
+                    @if($bookArea)
+                        <div class="col-lg-6">
+                            <div class="book-img-2">
+                                <img src="{{asset($bookArea->image)}}" alt="Images">
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <p>No book area data available</p>
+                    @endif
                 </div>
             </div>
         </div>
