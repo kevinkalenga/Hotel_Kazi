@@ -8,15 +8,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-   //  public function index()
-   //  {
-   //      return view('frontend.index');
-   //  }
+    public function index()
+    {
+        return view('frontend.index');
+    }
 
-   public function index()
-   {
-      return 'Laravel fonctionne';
-   }
+ 
 
     public function userProfile()
     {
@@ -89,7 +86,7 @@ class UserController extends Controller
        ]);
         
       // check that old pwd and the new authenticated pwd match   
-       if(!Hash::check($request->old_password, auth::user()->password)) {
+       if(!Hash::check($request->old_password, Auth::user()->password)) {
 
             $notification = array(
               'message' => 'Old Password Does not Match!',
@@ -102,7 +99,7 @@ class UserController extends Controller
         }
 
         // Update the new pwd 
-        User::whereId(auth::user()->id)->update([
+        User::whereId(Auth::user()->id)->update([
             'password' => Hash::make($request->new_password)
         ]);
 
