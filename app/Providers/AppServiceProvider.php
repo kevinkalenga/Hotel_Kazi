@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\SmtpSetting;
 use Config;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 
 {
