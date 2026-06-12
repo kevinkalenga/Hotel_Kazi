@@ -7,15 +7,13 @@ use Illuminate\Http\Request;
 
 class TrustProxies extends Middleware
 {
+    /**
+     * Trust all proxies (Railway / Docker / Cloud)
+     */
     protected $proxies = '*';
 
     /**
-     * IMPORTANT: force full proxy trust (Railway fix)
+     * Laravel 12 safe configuration
      */
-    protected $headers =
-        Request::HEADER_X_FORWARDED_FOR |
-        Request::HEADER_X_FORWARDED_HOST |
-        Request::HEADER_X_FORWARDED_PORT |
-        Request::HEADER_X_FORWARDED_PROTO |
-        Request::HEADER_X_FORWARDED_AWS_ELB;
+    protected $headers = Request::HEADER_X_FORWARDED_ALL;
 }
