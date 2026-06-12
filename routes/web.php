@@ -24,16 +24,7 @@ use App\Http\Controllers\Frontend\BookingController;
 //     return view('welcome');
 // });
 
-Route::get('/debug-proxy', function () {
-    return [
-        'is_secure' => request()->isSecure(),
-        'scheme' => request()->getScheme(),
-        'server_https' => $_SERVER['HTTPS'] ?? null,
-        'forwarded_proto' => request()->header('x-forwarded-proto'),
-        'host' => request()->getHttpHost(),
-        'url' => request()->getSchemeAndHttpHost(),
-    ];
-});
+
 
 
  Route::get('/', [UserController::class, 'index'])->name('index');

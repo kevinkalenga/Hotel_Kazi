@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\SmtpSetting;
 use Config;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\URL;
+
 class AppServiceProvider extends ServiceProvider
 
 {
@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
      
     public function boot(): void
 {
-    URL::forceScheme('https');
+    
     try {
         if (class_exists('Illuminate\Support\Facades\Schema') &&
             \Illuminate\Support\Facades\Schema::hasTable('smtp_settings')) {
