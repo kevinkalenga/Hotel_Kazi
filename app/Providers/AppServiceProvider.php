@@ -51,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
      
     public function boot(): void
 {
+    URL::forceScheme('https');
     try {
         if (class_exists('Illuminate\Support\Facades\Schema') &&
             \Illuminate\Support\Facades\Schema::hasTable('smtp_settings')) {
