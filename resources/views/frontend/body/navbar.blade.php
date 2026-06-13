@@ -4,6 +4,8 @@
   $setting = App\Models\SiteSetting::find(1);
 
  @endphp
+
+
   
   <div class="navbar-area">
             <!-- Menu For Mobile Device -->

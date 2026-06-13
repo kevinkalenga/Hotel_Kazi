@@ -18,6 +18,9 @@ class FrontendRoomController extends Controller
 {
     public function AllFrontendRoomList()
     {
+    
+dd(Room::count());
+
       // $rooms = Room::latest()->get();
       $rooms = Room::latest()->paginate(3);
       return view('frontend.room.all_rooms', compact('rooms'));

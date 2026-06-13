@@ -133,3 +133,6 @@ return new class extends Migration
         <!-- Blog Area -->
            @include('frontend.home.blog')
         <!-- Blog Area End -->
+
+
+       
