@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use Auth;
 
 
 class ContactController extends Controller
@@ -15,6 +16,12 @@ class ContactController extends Controller
     }
 
     public function StoreContactUs(Request $request){
+        
+        if (!Auth::check()) {
+            return redirect()->route('login')
+            ->with('error', 'You must login in order to send the message.');
+        }
+    
         $request->validate([
           'name' => 'required|string|max:255',
           'email' => 'required|email',
@@ -22,6 +29,8 @@ class ContactController extends Controller
           'subject' => 'required|string|max:255',
           'message' => 'required|string',
         ]);
+
+     
 
         Contact::create([
              'name' => $request->name,
