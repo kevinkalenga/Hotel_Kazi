@@ -37,55 +37,116 @@
 
                     <div class="col-lg-6">
                         <div class="contact-form">
-                            <form action="{{ route('store.contact') }}" method="POST" novalidate>
-                                @csrf
-                                <div class="row">
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="form-group">
-                                            <input type="text" name="name" id="name" class="form-control" required data-error="Please enter your name" placeholder="Name">
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="form-group">
-                                            <input type="email" name="email" id="email" class="form-control" required data-error="Please enter your email" placeholder="Email">
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="form-group">
-                                            <input type="text" name="phone" id="phone" required data-error="Please enter your number" class="form-control" placeholder="Phone">
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="form-group">
-                                            <input type="text" name="subject" id="subject" class="form-control" required data-error="Please enter your subject" placeholder="Your Subject">
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group">
-                                            <textarea name="message" class="form-control" id="message" cols="30" rows="8" required data-error="Write your message" placeholder="Your Message"></textarea>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
+                            @auth
+                                
+                                 @php  
+                                       
+                                    $id = Auth::user()->id;
+                                    $userData = App\Models\User::find($id);
 
-                                    
-    
-                                    <div class="col-lg-12 col-md-12">
-                                        <button type="submit" class="default-btn btn-bg-three">
-                                            Send Message
-                                        </button>
-                                      
-                                        <div class="clearfix"></div>
+                                @endphp
+                            
+                                <form action="{{ route('store.contact') }}" method="POST" novalidate>
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="name" id="name" class="form-control" required data-error="Please enter your name" placeholder="Name" value="{{$userData->name}}">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="email" class="form-control" required data-error="Please enter your email" placeholder="Email" value="{{$userData->email}}">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="phone" id="phone" required data-error="Please enter your number" class="form-control" placeholder="Phone" value="{{$userData->phone}}">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="subject" id="subject" class="form-control" required data-error="Please enter your subject" placeholder="Your Subject">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <textarea name="message" class="form-control" id="message" cols="30" rows="8" required data-error="Write your message" placeholder="Your Message"></textarea>
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+
+                                        
+        
+                                        <div class="col-lg-12 col-md-12">
+                                            <button type="submit" class="default-btn btn-bg-three">
+                                                Send Message
+                                            </button>
+                                        
+                                            <div class="clearfix"></div>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                             @else 
+                             
+                                <form action="{{ route('store.contact') }}" method="POST" novalidate>
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="name" id="name" class="form-control" required data-error="Please enter your name" placeholder="Name">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="email" class="form-control" required data-error="Please enter your email" placeholder="Email">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="phone" id="phone" required data-error="Please enter your number" class="form-control" placeholder="Phone">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="subject" id="subject" class="form-control" required data-error="Please enter your subject" placeholder="Your Subject">
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <textarea name="message" class="form-control" id="message" cols="30" rows="8" required data-error="Write your message" placeholder="Your Message"></textarea>
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+
+                                        
+        
+                                        <div class="col-lg-12 col-md-12">
+                                            <button type="submit" class="default-btn btn-bg-three">
+                                                Send Message
+                                            </button>
+                                        
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            @endauth
                         </div>
                     </div>
                 </div>
