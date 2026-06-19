@@ -37,7 +37,7 @@
 
                     <div class="col-lg-6">
                         <div class="contact-form">
-                            <form action="{{ route('store.contact') }}" method="POST">
+                            <form action="{{ route('store.contact') }}" method="POST" novalidate>
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6">
